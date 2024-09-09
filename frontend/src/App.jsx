@@ -1,13 +1,13 @@
-import '@mantine/core/styles.css';
+import "@mantine/core/styles.css";
 
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 
+import Header from "./Components/Header";
 
 export default function App() {
-  return <MantineProvider>
-
-
-
-
-  </MantineProvider>;
+  return (
+    <MantineProvider>
+      <Header />
+    </MantineProvider>
+  );
 }
