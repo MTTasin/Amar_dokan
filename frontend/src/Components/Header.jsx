@@ -1,14 +1,11 @@
-import { useColorScheme, useToggle } from '@mantine/hooks';
-import { useEffect } from 'react';
-
-
+import { useState, useEffect } from "react";
+import { useClickOutside } from "@mantine/hooks";
+import { Input, CloseButton } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 export default function Header() {
-
-    
-
-    document.documentElement.setAttribute('data-mantine-color-scheme', false);
-    
+  const [opened, setOpened] = useState(false);
+  const ref = useClickOutside(() => setOpened(false));
 
   const themeController = () => {
     return (
@@ -67,17 +64,12 @@ export default function Header() {
               className="menu menu-sm dropdown-content bg-base-300 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a>Homepage</a>
+                <Link to="/">Home</Link>
               </li>
               <li>
-                <a>Portfolio</a>
+                <Link to="../pages/About">About</Link>
               </li>
-              <li>
-                <a>About</a>
-              </li>
-              <li>
-                {themeController()}
-              </li>
+              <li>{themeController()}</li>
             </ul>
           </div>
         </div>
@@ -87,7 +79,17 @@ export default function Header() {
           </a>
         </div>
         <div className="navbar-end">
-          <button className="btn btn-ghost btn-circle">
+          {opened && (
+            <Input
+              ref={ref}
+              placeholder="Search"
+              className="bg-white rounded-full text-black"
+            />
+          )}
+          <button
+            className="btn btn-ghost btn-circle"
+            onClick={() => setOpened(true)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
