@@ -5,11 +5,32 @@
 
 
 .mantine-Carousel-indicator {
-    width: 12px;
-    height: 4px;
-    transition: width 250ms ease;
+    
+    background-color: transparent;
+    
+    &:before {
+      content: "";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      background-image: url("./assets/circle-dashed-svgrepo-com.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      margin-right: 0.5em;
+    }
+    
   
     &[data-active] {
-      width: 50px;
+      width: 1.5em;
+      height: 1.5em;
+      background-image: url("./assets/circle-svgrepo-com.svg");
+
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: width 1s ease;
     }
+
+    
   }

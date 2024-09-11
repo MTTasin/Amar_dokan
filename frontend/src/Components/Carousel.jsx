@@ -1,35 +1,62 @@
-import { Carousel } from "@mantine/carousel";
-import { useRef } from "react";
-import Autoplay from 'embla-carousel-autoplay';
+import { useRef, useEffect, useState } from "react";
+import useFetch from "./../useFetch";
+import { Swiper, SwiperSlide } from "swiper/react";
 
+import "swiper/css";
+import "swiper/css/effect-creative";
+
+import { EffectCreative, Autoplay } from "swiper/modules";
 
 export default function Carou() {
-    const autoplay = useRef(Autoplay({ delay: 2000 }));
+  const [data, setData] = useState([]);
+
+  const { response, error, loading } = useFetch(
+    `http://127.0.0.1:8000/carousels/`
+  );
+
+  useEffect(() => {
+    if (response) {
+      setData(response);
+    }
+  }, [response]);
+
+  const carousel = data.map((carousel) => {
+    return (
+      <SwiperSlide key={carousel.id}>
+        <img
+          src={carousel.image}
+          alt=""
+          className="w-[80vw] h-[60vh] mx-auto"
+        />{" "}
+      </SwiperSlide>
+    );
+  });
+
   return (
-    <div style={{ height: '100%', display: 'flex' }}>
-      <Carousel
-        className={`text-center text-3xl font-bold text-white` }
-        plugins={[autoplay.current]}
-        onMouseEnter={autoplay.current.stop}
-        onMouseLeave={autoplay.current.reset}
-        height="80vh"
-        slideGap="lg"
-        controlSize={20}
-        loop
-        withIndicators
-        style={{ flex: 1 }}
+    <>
+      <Swiper
+        grabCursor={true}
+        effect={"creative"}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        loop={true}
+        creativeEffect={{
+          prev: {
+            shadow: true,
+            translate: ["-120%", 0, -500],
+          },
+          next: {
+            shadow: true,
+            translate: ["120%", 0, -500],
+          },
+        }}
+        modules={[EffectCreative, Autoplay]}
+        className="mySwiper2"
       >
-        <Carousel.Slide className="bg-primary">1</Carousel.Slide>
-        <Carousel.Slide className="bg-secondary">2</Carousel.Slide>
-        <Carousel.Slide className="bg-accent">3</Carousel.Slide>
-        <Carousel.Slide className="bg-neutral">4</Carousel.Slide>
-        <Carousel.Slide className="bg-info">5</Carousel.Slide>
-        <Carousel.Slide className="bg-success">6</Carousel.Slide>
-        <Carousel.Slide className="bg-warning">7</Carousel.Slide>
-        <Carousel.Slide className="bg-error">8</Carousel.Slide>
-        <Carousel.Slide className="bg-gray">9</Carousel.Slide>
-        <Carousel.Slide className="bg-black">10</Carousel.Slide>
-      </Carousel>
-    </div>
+        {carousel}
+      </Swiper>
+    </>
   );
 }
