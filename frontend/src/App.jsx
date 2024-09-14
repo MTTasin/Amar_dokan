@@ -12,6 +12,8 @@ import Home from "./Pages/Home";
 
 import About from "./Pages/About";
 
+import Carousel_edit from "./Admin/Carousel_edit";
+
 export default function App() {
   return (
     <MantineProvider defaultColorScheme="false">
@@ -19,6 +21,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Pages/About" element={<About />} />
+        <Route path="/Admin/Carousel_edit" element={<Carousel_edit />} />
       </Routes>
     </MantineProvider>
   );

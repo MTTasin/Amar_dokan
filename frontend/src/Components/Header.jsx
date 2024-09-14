@@ -69,6 +69,9 @@ export default function Header() {
               <li>
                 <Link to="../pages/About">About</Link>
               </li>
+              <li>
+                <Link to="../Admin/Carousel_edit">Edit the Carousel</Link>
+              </li>
               <li>{themeController()}</li>
             </ul>
           </div>
