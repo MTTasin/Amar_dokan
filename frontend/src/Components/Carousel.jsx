@@ -22,12 +22,13 @@ export default function Carou() {
 
   const carousel = data.map((carousel) => {
     return (
-      <SwiperSlide key={carousel.id}>
+      <SwiperSlide key={carousel.id} className="flex justify-center relative">
         <img
           src={carousel.image}
           alt=""
-          className="w-[80vw] h-[60vh] mx-auto"
+          className="w-[80vw] h-[60vh]"
         />{" "}
+        <a className="absolute btn bg-green-400 text-white rounded-none border-white bottom-5 left-16 md:left-56" href={carousel.link}>Check out now</a>
       </SwiperSlide>
     );
   });
@@ -44,18 +45,19 @@ export default function Carou() {
         loop={true}
         creativeEffect={{
           prev: {
-            shadow: true,
+            
             translate: ["-120%", 0, -500],
           },
           next: {
-            shadow: true,
+            
             translate: ["120%", 0, -500],
           },
         }}
         modules={[EffectCreative, Autoplay]}
-        className="mySwiper2"
+        className="mySwiper2 "
       >
         {carousel}
+        
       </Swiper>
     </>
   );
