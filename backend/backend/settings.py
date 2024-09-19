@@ -49,30 +49,46 @@ INSTALLED_APPS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
+        'FETCH_USERINFO' : True,
+        'SCOPES': ['profile', 'email'],
         'APP': {
-            
+            "client_id": "Client Id",
+            "client_secret": "Client Secret",
         }
     }
 }
 
-SITE_ID = 1
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173/']
 
-CSRF_TRUSTED_ORIGINS=['http://localhost:5173']
+SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_USERNAME_REQUIRED = False
 
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'mail.tasinblog.com'
+
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = 'mail@tasinblog.com'
+
+EMAIL_HOST_PASSWORD = 'M.T.Tasin2002@20119914'
+
+EMAIL_USE_TLS = True
+
 
 
 CORS_ORIGIN_ALLOW_ALL = True

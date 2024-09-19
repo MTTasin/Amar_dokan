@@ -13,6 +13,7 @@
     "@mantine/carousel": "^7.12.2",
     "@mantine/core": "^7.12.2",
     "@mantine/hooks": "^7.12.2",
+    "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.7",
     "embla-carousel-autoplay": "^7.1.0",
     "embla-carousel-react": "^7.1.0",

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useClickOutside } from "@mantine/hooks";
 import { Input, CloseButton } from "@mantine/core";
 import { Link } from "react-router-dom";
+import LoginForm from "./LoginForm";
 
 export default function Header() {
   const [opened, setOpened] = useState(false);
@@ -72,9 +73,8 @@ export default function Header() {
               <li>
                 <Link to="../Admin/Carousel_edit">Edit the Carousel</Link>
               </li>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
+              <li onClick={()=>document.getElementById('my_modal_2').showModal()}><a>Login</a></li>
+              
               <li>{themeController()}</li>
             </ul>
           </div>
@@ -132,6 +132,28 @@ export default function Header() {
           </button>
         </div>
       </div>
+
+
+
+
+      <dialog id="my_modal_2" className="modal">
+  <div className="modal-box">
+    
+<LoginForm/>
+
+
+
+  </div>
+  <form method="dialog" className="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
     </>
   );
 }
+
+
+
+
+
+
