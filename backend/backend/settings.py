@@ -89,9 +89,9 @@ EMAIL_HOST = 'mail.tasinblog.com'
 
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'mail@tasinblog.com'
+EMAIL_HOST_USER = 'Email'
 
-EMAIL_HOST_PASSWORD = 'M.T.Tasin2002@20119914'
+EMAIL_HOST_PASSWORD = 'Password'
 
 EMAIL_USE_TLS = True
 
