@@ -50,11 +50,12 @@ We're done for the backend.
 **Let the terminal as it is don't close it until you're finished checking out the website.**
 
 #### Frontend
-1.  Navigate to the  `frontend`  folder
+1. Navigate to the  `frontend`  folder
 2. Open a separate terminal here.
-3.  Enter this command: `npm run dev`
-4. You will see a link like this in the terminal: `localhost:5173`
-5. Enter this link to your browser and enjoy the project.
+3. Install dependencies for frontend: `npm install`
+4. Enter this command: `npm run dev`
+5. You will see a link like this in the terminal: `localhost:5173`
+6. Enter this link to your browser and enjoy the project.
 
 
 
