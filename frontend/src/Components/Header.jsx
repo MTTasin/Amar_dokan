@@ -139,7 +139,8 @@ export default function Header() {
       <dialog id="my_modal_2" className="modal">
   <div className="modal-box">
     
-<LoginForm/>
+
+    <LoginForm />
 
 
 
