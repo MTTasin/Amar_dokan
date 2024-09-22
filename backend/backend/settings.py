@@ -45,33 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'rest_framework',
-    'corsheaders',
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    'djoser',
+    
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'FETCH_USERINFO' : True,
-        'SCOPES': ['profile', 'email'],
-        'APP': {
-            "client_id": os.getenv('CLIENT_ID'),
-            "client_secret": os.getenv('CLIENT_SECRET'),
-        }
-    }
-}
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173/']
-
-SITE_ID = 1
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
 
 
 
@@ -89,15 +67,15 @@ EMAIL_HOST = 'mail.tasinblog.com'
 
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'Email'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 
-EMAIL_HOST_PASSWORD = 'Password'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 EMAIL_USE_TLS = True
 
 
 
-CORS_ORIGIN_ALLOW_ALL = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -107,10 +85,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -118,7 +92,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -185,7 +159,52 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'templates/static'),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTH_USER_MODEL = 'app.UserAccount'
+
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+
+DJOSER={
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'USERNAME_CHANGE_EMAIL_CONFIRMATION': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SET_USERNAME_RETYPE': True,
+    'SET_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {
+        'user_create': 'app.serializers.UserCreateSerializer',
+        'user': 'app.serializers.UserSerializer',
+        'user_delete': 'app.serializers.UserDeleteSerializer',
+    }
+}
