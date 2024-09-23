@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 
-export default function LoginForm() {
+function LoginForm() {
   const [login, setLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginFormData, setLoginFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -36,26 +39,36 @@ export default function LoginForm() {
       alert("Passwords do not match");
       return;
     }
-    console.log(formData);
+    
   };
+
+  const handleLoginSubmit = (event) => {
+    event.preventDefault();
+  };
+
+  function forPass() {
+    document.getElementById("login").close();
+  }
 
   return (
     <>
+    <dialog id="login" className="modal">
+    <div className="modal-box">
       {login ? (
         <div>
           <div className="flex flex-col items-center">
-            <form className="flex flex-col gap-5 w-full max-w-md">
+            <form onSubmit={event => handleLoginSubmit(event)} className="flex flex-col gap-5 w-full max-w-md">
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={loginFormData.email}
+                onChange={(e) => setLoginFormData({ ...loginFormData, email: e.target.value })}
                 className="input input-bordered w-full"
                 placeholder="Email"
               />
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={loginFormData.password}
+                onChange={(e) => setLoginFormData({ ...loginFormData, password: e.target.value })}
                 className="input input-bordered w-full"
                 placeholder="Password"
               />
@@ -63,10 +76,12 @@ export default function LoginForm() {
                 Login
               </button>
 
-              <a className="text-center cursor-pointer" onClick={() => setLogin(false)}>
-                {" "}
+              <Link to="/reset_password" className="text-center cursor-pointer" onClick={forPass}>
+                Forgot your password?
+              </Link>
+              <p className="text-center cursor-pointer" onClick={() => setLogin(false)}>
                 Don't have an account? Sign up
-              </a>
+              </p>
             </form>
           </div>
         </div>
@@ -75,7 +90,7 @@ export default function LoginForm() {
           <div className="flex flex-col items-center">
             <form
               className="flex flex-col gap-5 w-full max-w-md"
-              onSubmit={handleSubmit}
+              onSubmit={event => handleSubmit(event)}
             >
               <input
                 type="text"
@@ -118,27 +133,20 @@ export default function LoginForm() {
               </button>
 
               <a className="text-center cursor-pointer" onClick={() => setLogin(true)}>
-                {" "}
                 Already have an account? Login
               </a>
             </form>
           </div>
         </div>
       )}
+
+</div>
+  <form method="dialog" className="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
     </>
   );
 }
 
-{
-  /* <div>
-<h1 className="text-3xl text-center mb-5">Login</h1>
-<form className="form w-50 flex flex-col gap-5 mx-auto">
-    <input type="text" name="email" className="form-control mb-3 p-3 rounded-md" placeholder="Email"/>
-    <input type="password" className="form-control mb-3 p-3 rounded-md" placeholder="Password"/>
-    <button className="btn btn-primary" type="submit">Login</button>
-    
-    <button className="btn btn-primary" type="submit" onClick={googleLogin}>Google Login</button>
-    
-</form>
-</div> */
-}
+export default LoginForm;

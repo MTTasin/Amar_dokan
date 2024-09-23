@@ -68,7 +68,7 @@ export default function Carousel_edit() {
      else {
       setAlert(false);
       fetchData();
-      document.getElementById("my_modal_2").close();
+      document.getElementById("carousel").close();
     }
   }
 
@@ -108,12 +108,12 @@ export default function Carousel_edit() {
       <div className="flex justify-center">
         <button
           className="btn btn-primary my-4 w-[75vw]"
-          onClick={() => document.getElementById("my_modal_2").showModal()}
+          onClick={() => document.getElementById("carousel").showModal()}
         >
           Add Carousels
         </button>
       </div>
-      <dialog id="my_modal_2" className="modal">
+      <dialog id="carousel" className="modal">
         <div className="modal-box">
         <form action="" onSubmit={handlesubmit} className="flex flex-col gap-4">
         <input  type="text" placeholder="Image Link" name="image" value={caroudata.image} className="input input-bordered w-full max-w-xs mx-auto text-white" onChange={(e) => setCaroudata({ ...caroudata, image: e.target.value })} />

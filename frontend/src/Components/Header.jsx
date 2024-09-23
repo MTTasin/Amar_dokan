@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { useClickOutside } from "@mantine/hooks";
 import { Input, CloseButton } from "@mantine/core";
 import { Link } from "react-router-dom";
-import LoginForm from "./LoginForm";
+import LoginForm from "../Authentication/LoginForm";
+
+
 
 export default function Header() {
   const [opened, setOpened] = useState(false);
@@ -10,7 +12,7 @@ export default function Header() {
 
   const themeController = () => {
     return (
-      <label className="swap swap-rotate">
+      <label className="swap swap-rotate p-4">
         {/* this hidden checkbox controls the state */}
         <input type="checkbox" className="theme-controller" value="light" />
 
@@ -62,18 +64,18 @@ export default function Header() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-300 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu  dropdown-content bg-base-300 rounded-box mt-3 w-56 shadow text-xl"
             >
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/" className="py-4">Home</Link>
               </li>
               <li>
-                <Link to="../pages/About">About</Link>
+                <Link to="../pages/About" className="py-4">About</Link>
               </li>
               <li>
-                <Link to="../Admin/Carousel_edit">Edit the Carousel</Link>
+                <Link to="../Admin/Carousel_edit" className="py-4">Edit the Carousel</Link>
               </li>
-              <li onClick={()=>document.getElementById('my_modal_2').showModal()}><a>Login</a></li>
+              <li onClick={()=>document.getElementById('login').showModal()}><a className="py-4">Login</a></li>
               
               <li>{themeController()}</li>
             </ul>
@@ -89,7 +91,7 @@ export default function Header() {
             <Input
               ref={ref}
               placeholder="Search"
-              className="bg-white rounded-full text-black"
+              className="bg-base-300 rounded-full dark:text-white"
             />
           )}
           <button
@@ -136,19 +138,14 @@ export default function Header() {
 
 
 
-      <dialog id="my_modal_2" className="modal">
-  <div className="modal-box">
+      
     
 
     <LoginForm />
 
 
 
-  </div>
-  <form method="dialog" className="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
+
     </>
   );
 }
