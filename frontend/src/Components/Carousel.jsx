@@ -11,7 +11,7 @@ export default function Carou() {
   const [data, setData] = useState([]);
 
   const { response, error, loading } = useFetch(
-    `http://127.0.0.1:8000/carousels/`
+    `http://192.168.0.105:8000/carousels/`
   );
 
   useEffect(() => {
@@ -26,8 +26,8 @@ export default function Carou() {
         <img
           src={carousel.image}
           alt=""
-          className="w-[80vw] h-[60vh]"
-        />{" "}
+          className="w-[80vw] h-[20vh] md:h-[60vh] object-cover"
+        />
         <a className="absolute btn bg-green-400 text-white rounded-none border-white bottom-5 left-16 md:left-56" href={carousel.link}>Check out now</a>
       </SwiperSlide>
     );

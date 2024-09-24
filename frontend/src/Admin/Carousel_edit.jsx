@@ -15,12 +15,12 @@ export default function Carousel_edit() {
   );
 
   const { response, error, loading } = useFetch(
-    `http://127.0.0.1:8000/carousels/`
+    `http://192.168.0.105:8000/carousels/`
   );
 
 
   function fetchData() {
-    fetch(`http://127.0.0.1:8000/carousels/`)
+    fetch(`http://192.168.0.105:8000/carousels/`)
       .then((response) => response.json())
       .then((data) => setCarousel(data));
   }
@@ -33,7 +33,7 @@ export default function Carousel_edit() {
   }, [response]);
 
   function handleClick(id) {
-    fetch(`http://127.0.0.1:8000/carousels/${id}/`, {
+    fetch(`http://192.168.0.105:8000/carousels/${id}/`, {
       method: "DELETE",
     })
       .then((response) => response.json());
@@ -49,7 +49,7 @@ export default function Carousel_edit() {
 
   function handlesubmit(e) {
     e.preventDefault();
-    fetch("http://127.0.0.1:8000/carousels/", {
+    fetch("http://192.168.0.105:8000/carousels/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

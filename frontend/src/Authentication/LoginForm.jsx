@@ -11,7 +11,8 @@ function LoginForm() {
   });
 
   const [formData, setFormData] = useState({
-    name: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
     re_password: "",
@@ -94,11 +95,19 @@ function LoginForm() {
             >
               <input
                 type="text"
-                name="name"
+                name="first_name"
                 value={formData.name}
                 onChange={handleChange}
                 className="input input-bordered w-full"
-                placeholder="Name"
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                name="last_name"
+                value={formData.name}
+                onChange={handleChange}
+                className="input input-bordered w-full"
+                placeholder="Last Name"
               />
               <input
                 type="email"

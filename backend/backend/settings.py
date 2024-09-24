@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
     'djoser',
+    'rest_framework_simplejwt',
     
 ]
 
@@ -92,12 +93,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -136,10 +133,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
+STATIC_URL = 'templates/assets/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates/static'),
+    os.path.join(BASE_DIR, 'templates/assets'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -198,6 +194,13 @@ DJOSER={
 CORS_ALLOW_ALL_ORIGINS = True
 
 
+ACCESS_CONTROL_ALLOW_ORIGIN = '*'
+ACCESS_CONTROL_ALLOW_METHODS = 'GET, POST, PUT, DELETE, OPTIONS, PATCH'
+ACCESS_CONTROL_ALLOW_HEADERS = 'Content-Type, JWT, Accept, Authorization'
+
+
+
+
 
 
 ACCOUNT_EMAIL_REQUIRED = True
@@ -219,4 +222,6 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 EMAIL_USE_TLS = True
+
+
 
