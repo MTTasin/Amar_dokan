@@ -19,6 +19,9 @@ function LoginForm() {
   });
   const [passMatch, setPassMatch] = useState(false);
 
+
+
+
   const handlePassMatch = () => {
     if (formData.password !== formData.re_password) {
       setPassMatch(true);
@@ -58,7 +61,9 @@ function LoginForm() {
       {login ? (
         <div>
           <div className="flex flex-col items-center">
-            <form onSubmit={event => handleLoginSubmit(event)} className="flex flex-col gap-5 w-full max-w-md">
+          <div className="flex flex-col items-center"><img src="/logo.png" alt="" className="w-24" /></div>
+          <h2 className="text-center text-3xl font-bold mb-7 mt-4">Login</h2>
+            <form onSubmit={event => handleLoginSubmit(event)} className="flex flex-col gap-3 w-full max-w-md">
               <input
                 type="email"
                 value={loginFormData.email}
@@ -77,20 +82,22 @@ function LoginForm() {
                 Login
               </button>
 
-              <Link to="/reset_password" className="text-center cursor-pointer" onClick={forPass}>
-                Forgot your password?
+              <Link to="/reset_password" className="text-center cursor-pointer mx-auto">
+                <p onClick={forPass}>Forgot your password?</p>
               </Link>
-              <p className="text-center cursor-pointer" onClick={() => setLogin(false)}>
-                Don't have an account? Sign up
-              </p>
+              <div className="text-center cursor-pointer mx-auto">
+                <p onClick={() => setLogin(false)}>Don't have an account? Sign up</p>
+              </div>
             </form>
           </div>
         </div>
       ) : (
         <div>
+          <div className="flex flex-col items-center"><img src="/logo.png" alt="" className="w-24" /></div>
+          <h2 className="text-center text-3xl font-bold mb-7 mt-4">Sign Up</h2>
           <div className="flex flex-col items-center">
             <form
-              className="flex flex-col gap-5 w-full max-w-md"
+              className="flex flex-col gap-3 w-full max-w-md"
               onSubmit={event => handleSubmit(event)}
             >
               <input
@@ -122,26 +129,29 @@ function LoginForm() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="input input-bordered w-full"
+                className="input input-bordered w-full signUpPass"
                 placeholder="Password"
+
               />
               <input
                 type="password"
                 name="re_password"
                 value={formData.re_password}
                 onChange={handleChange}
-                className="input input-bordered w-full"
+                className="input input-bordered w-full signUpPass"
                 placeholder="Repeat Password"
                 onKeyUp={handlePassMatch}
+                
               />
-              <h4 className="text-red-500">
+              
+              <h4 className="text-red-500 text-center">
                 {passMatch ? "Passwords do not match" : ""}
               </h4>
               <button type="submit" className="btn btn-primary">
                 Signup
               </button>
 
-              <a className="text-center cursor-pointer" onClick={() => setLogin(true)}>
+              <a className="text-center cursor-pointer mx-auto" onClick={() => setLogin(true)}>
                 Already have an account? Login
               </a>
             </form>

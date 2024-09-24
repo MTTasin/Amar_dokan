@@ -22,11 +22,14 @@ import ResetPass from "./Authentication/ResetPass";
 
 import ResetPassConfirm from "./Authentication/ResetPassConfirm";
 
+import { Provider } from "react-redux";
+
+import { store } from "./app/store";
 
 export default function App() {
   return (
     <MantineProvider defaultColorScheme="false">
-      
+      <Provider store={store}>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -41,7 +44,7 @@ export default function App() {
             />
           </Routes>
         </Layout>
-      
+      </Provider>
     </MantineProvider>
   );
 }
