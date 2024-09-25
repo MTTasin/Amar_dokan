@@ -14,7 +14,6 @@ class CarouselViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        permission_classes = [IsAuthenticated]
         if isinstance(request.data, list):
             serializer = self.get_serializer(data=request.data, many=True)
             serializer.is_valid(raise_exception=True)

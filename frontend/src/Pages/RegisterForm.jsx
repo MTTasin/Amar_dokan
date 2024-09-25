@@ -1,14 +1,22 @@
-import axios from "axios";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  register,
+  reset,
+  getUserInfo,
+} from "../features/auth/authslice";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
 
-function LoginForm() {
-  const [login, setLogin] = useState(true);
-  const [loginFormData, setLoginFormData] = useState({
-    email: "",
-    password: "",
-  });
+export default function RegisterForm() {
+    const navigateReg = useNavigate();
+  const dispatchReg = useDispatch();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -19,8 +27,40 @@ function LoginForm() {
   });
   const [passMatch, setPassMatch] = useState(false);
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
+  const { first_name, last_name, email, password, re_password } = formData;
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (formData.password !== formData.re_password) {
+      alert("Passwords do not match");
+      return;
+    } else {
+      const userData = {
+        first_name,
+        last_name,
+        email,
+        password,
+        re_password
+    }
+      dispatchReg(register(userData));
+    }
+  };
 
+  useEffect(() => {
+    if (isSuccess || user) {
+      navigateReg("/");
+      toast.success("Registration Successful, An activation link has been sent to your email");
+    } else if (isError) {
+      toast.error(message);
+    }
+
+    dispatchReg(reset());
+    }, [user, isError, isSuccess, message, navigateReg, dispatchReg]
+  );
 
   const handlePassMatch = () => {
     if (formData.password !== formData.re_password) {
@@ -32,66 +72,7 @@ function LoginForm() {
     }
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (formData.password !== formData.re_password) {
-      alert("Passwords do not match");
-      return;
-    }
-    
-  };
-
-  const handleLoginSubmit = (event) => {
-    event.preventDefault();
-  };
-
-  function forPass() {
-    document.getElementById("login").close();
-  }
-
-  return (
-    <>
-    <dialog id="login" className="modal">
-    <div className="modal-box">
-      {login ? (
-        <div>
-          <div className="flex flex-col items-center">
-          <div className="flex flex-col items-center"><img src="/logo.png" alt="" className="w-24" /></div>
-          <h2 className="text-center text-3xl font-bold mb-7 mt-4">Login</h2>
-            <form onSubmit={event => handleLoginSubmit(event)} className="flex flex-col gap-3 w-full max-w-md">
-              <input
-                type="email"
-                value={loginFormData.email}
-                onChange={(e) => setLoginFormData({ ...loginFormData, email: e.target.value })}
-                className="input input-bordered w-full"
-                placeholder="Email"
-              />
-              <input
-                type="password"
-                value={loginFormData.password}
-                onChange={(e) => setLoginFormData({ ...loginFormData, password: e.target.value })}
-                className="input input-bordered w-full"
-                placeholder="Password"
-              />
-              <button type="submit" className="btn btn-primary">
-                Login
-              </button>
-
-              <Link to="/reset_password" className="text-center cursor-pointer mx-auto">
-                <p onClick={forPass}>Forgot your password?</p>
-              </Link>
-              <div className="text-center cursor-pointer mx-auto">
-                <p onClick={() => setLogin(false)}>Don't have an account? Sign up</p>
-              </div>
-            </form>
-          </div>
-        </div>
-      ) : (
+    return(
         <div>
           <div className="flex flex-col items-center"><img src="/logo.png" alt="" className="w-24" /></div>
           <h2 className="text-center text-3xl font-bold mb-7 mt-4">Sign Up</h2>
@@ -151,21 +132,12 @@ function LoginForm() {
                 Signup
               </button>
 
-              <a className="text-center cursor-pointer mx-auto" onClick={() => setLogin(true)}>
+              <Link to="/login" className="text-center cursor-pointer mx-auto">
                 Already have an account? Login
-              </a>
+              </Link>
             </form>
           </div>
         </div>
-      )}
+    )
 
-</div>
-  <form method="dialog" className="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
-    </>
-  );
 }
-
-export default LoginForm;

@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useClickOutside } from "@mantine/hooks";
 import { Input, CloseButton } from "@mantine/core";
-import { Link } from "react-router-dom";
-import LoginForm from "../Authentication/LoginForm";
+import { NavLink, useNavigate } from "react-router-dom";
+import LoginForm from "../Pages/LoginForm";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, reset } from "../features/auth/authslice";
+import { toast } from "react-toastify";
 
 
 
@@ -70,12 +73,12 @@ export default function Header() {
                 <Link to="/" className="py-4">Home</Link>
               </li>
               <li>
-                <Link to="../pages/About" className="py-4">About</Link>
+                <Link to="/About" className="py-4">About</Link>
               </li>
               <li>
-                <Link to="../Admin/Carousel_edit" className="py-4">Edit the Carousel</Link>
+                <Link to="/Carousel_edit" className="py-4">Edit the Carousel</Link>
               </li>
-              <li onClick={()=>document.getElementById('login').showModal()}><a className="py-4">Login</a></li>
+              <li><Link to="/login" className="py-4">Login</Link></li>
               
               <li>{themeController()}</li>
             </ul>
@@ -134,15 +137,6 @@ export default function Header() {
           </button>
         </div>
       </div>
-
-
-
-
-      
-    
-
-    <LoginForm />
-
 
 
 

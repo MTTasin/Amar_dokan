@@ -20,11 +20,21 @@ import Activate from "./Authentication/Activate";
 
 import ResetPass from "./Authentication/ResetPass";
 
+import LoginForm from "./Pages/LoginForm";
+
+import RegisterForm from "./Pages/RegisterForm";
+
 import ResetPassConfirm from "./Authentication/ResetPassConfirm";
+
+import Dashboard from "./Pages/Dashboard";
 
 import { Provider } from "react-redux";
 
-import { store } from "./app/store";
+import { store } from "./features/auth/store";
+
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
@@ -33,16 +43,20 @@ export default function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/Pages/About" element={<About />} />
-            <Route path="/Admin/Carousel_edit" element={<Carousel_edit />} />
+            <Route path="/About" element={<About />} />
+            <Route path="/Carousel_edit" element={<Carousel_edit />} />
             <Route exact path="/activate/:uid/:token" element={<Activate />} />
             <Route exact path="/reset_password" element={<ResetPass />} />
+            <Route exact path="/login" element={<LoginForm />} />
+            <Route exact path="/signup" element={<RegisterForm />} />
+            <Route exact path="/dashboard" element={<Dashboard />} />
             <Route
               exact
               path="/password/reset/confirm/:uid/:token"
               element={<ResetPassConfirm />}
             />
           </Routes>
+          <ToastContainer />
         </Layout>
       </Provider>
     </MantineProvider>
