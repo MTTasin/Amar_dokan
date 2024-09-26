@@ -16,15 +16,15 @@ import Carousel_edit from "./Admin/Carousel_edit";
 
 import Layout from "./Layout/Layout";
 
-import Activate from "./Authentication/Activate";
+import Activate from "./Pages/Activate";
 
-import ResetPass from "./Authentication/ResetPass";
+import ResetPass from "./Pages/ResetPass";
 
 import LoginForm from "./Pages/LoginForm";
 
 import RegisterForm from "./Pages/RegisterForm";
 
-import ResetPassConfirm from "./Authentication/ResetPassConfirm";
+import ResetPassConfirm from "./Pages/ResetPassConfirm";
 
 import Dashboard from "./Pages/Dashboard";
 
@@ -33,6 +33,8 @@ import { Provider } from "react-redux";
 import { store } from "./features/auth/store";
 
 import { ToastContainer } from "react-toastify";
+
+import NotFound from "./Pages/404";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -50,6 +52,7 @@ export default function App() {
             <Route exact path="/login" element={<LoginForm />} />
             <Route exact path="/signup" element={<RegisterForm />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route path="*" element={<NotFound />} />
             <Route
               exact
               path="/password/reset/confirm/:uid/:token"

@@ -12,6 +12,18 @@ import { toast } from "react-toastify";
 export default function Header() {
   const [opened, setOpened] = useState(false);
   const ref = useClickOutside(() => setOpened(false));
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector(
+    (state) => state.auth
+  );
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(reset());
+    navigate("/");
+    toast.success("Logout Successful");
+  };
 
   const themeController = () => {
     return (
@@ -70,24 +82,32 @@ export default function Header() {
               className="menu  dropdown-content bg-base-300 rounded-box mt-3 w-56 shadow text-xl"
             >
               <li>
-                <Link to="/" className="py-4">Home</Link>
+                <NavLink to="/" className="py-4">Home</NavLink>
               </li>
               <li>
-                <Link to="/About" className="py-4">About</Link>
+                <NavLink to="/About" className="py-4">About</NavLink>
               </li>
               <li>
-                <Link to="/Carousel_edit" className="py-4">Edit the Carousel</Link>
+                <NavLink to="/Carousel_edit" className="py-4">Edit the Carousel</NavLink>
               </li>
-              <li><Link to="/login" className="py-4">Login</Link></li>
+               {user && (
+                 <li><NavLink to="/dashboard" className="py-4">Dashboard</NavLink></li>
+               )}
+              
+             {user ? (
+               <li><NavLink to="/" onClick={handleLogout} className="py-4">Logout</NavLink></li>
+             ):(
+              <li><NavLink to="/login" className="py-4">Login</NavLink></li>
+             )}
               
               <li>{themeController()}</li>
             </ul>
           </div>
         </div>
         <div className="navbar-center">
-          <Link to="/" className="btn btn-ghost text-xl">
+          <NavLink to="/" className="btn btn-ghost text-xl">
             <img src="/logo.png" alt="amar dokan" className="w-[50px]" />
-          </Link>
+          </NavLink>
         </div>
         <div className="navbar-end">
           {opened && (

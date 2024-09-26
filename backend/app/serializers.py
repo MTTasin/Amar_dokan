@@ -10,7 +10,7 @@ User = get_user_model()
 class UserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'password')
+        fields = ('id', 'email', 'first_name', 'last_name', 'password', 'is_active', 'is_staff, is_superuser')
 
 
 class CarouselSerializer(serializers.ModelSerializer):

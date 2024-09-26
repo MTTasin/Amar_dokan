@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  login,
-  reset,
-  getUserInfo,
-} from "../features/auth/authslice";
+import { login, reset, getUserInfo } from "../features/auth/authslice";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../Components/Loader/Loader";
 
 function LoginForm() {
   const [loginstate, setLoginstate] = useState(true);
@@ -18,12 +15,12 @@ function LoginForm() {
     email: "",
     password: "",
   });
-  
- console.log(loginFormData)
 
+  
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+  
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -50,8 +47,9 @@ function LoginForm() {
   }, [user, isError, isSuccess, navigate, dispatch]);
 
   return (
-    <>
-      <div>
+    <div className="relative">
+    {isLoading && <div className="flex justify-center items-center h-[80vh] w-[100vw] z-10 absolute"><Loader /></div>}
+    <div className={isLoading ? "opacity-10 z-0" : "my-auto"}>
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center">
             <img src="/logo.png" alt="" className="w-24" />
@@ -98,7 +96,7 @@ function LoginForm() {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,112 +1,138 @@
-import axios from "axios"
+import axios from "axios";
 
-const BACKEND_DOMAIN = "http://192.168.0.105:8000"
+const BACKEND_DOMAIN = "http://192.168.0.105:8000";
 
-const REGISTER_URL = `${BACKEND_DOMAIN}/auth/users/`
-const LOGIN_URL = `${BACKEND_DOMAIN}/auth/jwt/create/`
-const ACTIVATE_URL = `${BACKEND_DOMAIN}/auth/users/activation/`
-const RESET_PASSWORD_URL = `${BACKEND_DOMAIN}/auth/users/reset_password/`
-const RESET_PASSWORD_CONFIRM_URL = `${BACKEND_DOMAIN}/auth/users/reset_password_confirm/`
-const GET_USER_INFO = `${BACKEND_DOMAIN}/auth/users/me/`
-
-
+const REGISTER_URL = `${BACKEND_DOMAIN}/auth/users/`;
+const LOGIN_URL = `${BACKEND_DOMAIN}/auth/jwt/create/`;
+const ACTIVATE_URL = `${BACKEND_DOMAIN}/auth/users/activation/`;
+const RESET_PASSWORD_URL = `${BACKEND_DOMAIN}/auth/users/reset_password/`;
+const RESET_PASSWORD_CONFIRM_URL = `${BACKEND_DOMAIN}/auth/users/reset_password_confirm/`;
+const GET_USER_INFO = `${BACKEND_DOMAIN}/auth/users/me/`;
 
 // Register user
 
 const register = async (userData) => {
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    }
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
 
-    const response = await axios.post(REGISTER_URL, userData, config)
+  const response = await axios.post(REGISTER_URL, userData, config);
 
-    return response.data
-}
+  return response.data;
+};
 
 // Login user
 
 const login = async (userData) => {
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    }
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
 
-    const response = await axios.post(LOGIN_URL, userData, config)
+  const response = await axios.post(LOGIN_URL, userData, config);
 
-    if (response.data) {
-        localStorage.setItem("user", JSON.stringify(response.data))
-    }
+  if (response.data) {
+    localStorage.setItem("user", JSON.stringify(response.data));
+  }
 
-    return response.data
-}
+  return response.data;
+};
 
-// Logout 
+// Logout
 
 const logout = () => {
-    return localStorage.removeItem("user")
-}
+  return localStorage.removeItem("user");
+};
 
 // Activate user
 
 const activate = async (userData) => {
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    }
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
 
-    const response = await axios.post(ACTIVATE_URL, userData, config)
+  const response = await axios.post(ACTIVATE_URL, userData, config);
 
-    return response.data
-}
+  return response.data;
+};
 
 // Reset Password
 
 const resetPassword = async (userData) => {
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    }
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
 
-    const response = await axios.post(RESET_PASSWORD_URL, userData, config)
+  const response = await axios.post(RESET_PASSWORD_URL, userData, config);
 
-    return response.data
-}
+  return response.data;
+};
 
 // Reset Password
 
 const resetPasswordConfirm = async (userData) => {
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    }
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
 
-    const response = await axios.post(RESET_PASSWORD_CONFIRM_URL, userData, config)
+  const response = await axios.post(
+    RESET_PASSWORD_CONFIRM_URL,
+    userData,
+    config
+  );
 
-    return response.data
-}
+  return response.data;
+};
 
 // Get User Info
 
-const getUserInfo = async (accessToken) => {
-    const config = {
-        headers: {
-            "Authorization": `Bearer ${accessToken}`
-        }
-    }
+// const getUserInfo = async (accessToken) => {
+//   const config = {
+//     headers: {
+//       "Content-type": "application/json",
+//       Authorization: `JWT ${localStorage.getItem("access")}`,
+//       Accept: "application/json",
+//     },
+//   };
 
-    const response = await axios.get(GET_USER_INFO, config)
+//   const response = await axios.get(GET_USER_INFO, config);
 
-    return response.data
-}
+//   return response.data;
+// };
 
+const getUserInfo = () => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      "Authorization": `JWT ${localStorage.getItem("access")}`,
+      "Accept": "application/json",
+    },
+  };
+  const res = await axios.get(`${BACKEND_DOMAIN}/auth/users/me/`, config);
+  dispatch({
+    type: "AUTH",
+    payload: res.data,
+  });
+  return res.data;
+};
 
+const authService = {
+  register,
+  login,
+  logout,
+  activate,
+  resetPassword,
+  resetPasswordConfirm,
+  getUserInfo,
+};
 
-const authService = { register, login, logout, activate, resetPassword, resetPasswordConfirm, getUserInfo }
-
-export default authService
+export default authService;
