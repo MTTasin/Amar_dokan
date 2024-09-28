@@ -29,8 +29,7 @@ export default function Dashboard() {
             });
     }, []);
 
-
-    console.log(userData)
+    console.log(userData);
 
     return (
         <div>

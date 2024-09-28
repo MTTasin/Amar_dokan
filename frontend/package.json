@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "proxy": "http://192.168.0.105:8000",
+  "homepage": "https://amardokan.tasinblo",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
