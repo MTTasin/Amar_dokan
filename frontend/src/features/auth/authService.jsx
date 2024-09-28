@@ -109,21 +109,18 @@ const resetPasswordConfirm = async (userData) => {
 //   return response.data;
 // };
 
-const getUserInfo = () => async (dispatch) => {
+const getUserInfo = async (accessToken) => {
   const config = {
-    headers: {
-      "Content-type": "application/json",
-      "Authorization": `JWT ${localStorage.getItem("access")}`,
-      "Accept": "application/json",
-    },
-  };
-  const res = await axios.get(`${BACKEND_DOMAIN}/auth/users/me/`, config);
-  dispatch({
-    type: "AUTH",
-    payload: res.data,
-  });
-  return res.data;
-};
+      headers: {
+          "Authorization": `JWT ${accessToken}`
+      }
+  }
+
+  const response = await axios.get(GET_USER_INFO, config)
+
+  return response.data
+}
+
 
 const authService = {
   register,

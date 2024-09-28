@@ -26,7 +26,7 @@ export default function Carou() {
         <img
           src={carousel.image}
           alt=""
-          className="w-[80vw] h-[50vh] md:h-[60vh] object-cover"
+          className="w-[80vw] h-[25vh] md:h-[60vh] object-cover"
         />
         <a className="absolute btn bg-green-400 text-white rounded-none border-white bottom-5 left-16 md:left-56" href={carousel.link}>Check out now</a>
       </SwiperSlide>
