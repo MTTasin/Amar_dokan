@@ -1,4 +1,4 @@
-import { getUserInfo } from "../features/auth/authslice";
+import { getUserInfo } from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -17,7 +17,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         axios
-            .get("http://127.0.0.1:8000/auth/users/me/", {
+            .get("http://192.168.0.105:8000/auth/users/me/", {
                 headers: {
                     "Content-type": "application/json",
                     "Authorization": `JWT ${user.access}`,
@@ -29,7 +29,6 @@ export default function Dashboard() {
             });
     }, []);
 
-    console.log(userData);
 
     return (
         <div>

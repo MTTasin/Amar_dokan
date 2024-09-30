@@ -3,8 +3,8 @@ from .models import Carousel
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from .permission import IsOwnerOrReadOnly
+from rest_framework_guardian import filters
 
 # Create your views here.
 
@@ -13,6 +13,7 @@ class CarouselViewSet(viewsets.ModelViewSet):
     serializer_class = CarouselSerializer
     queryset = Carousel.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
+    
     
 
     def create(self, request, *args, **kwargs):

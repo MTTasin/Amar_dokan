@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'rest_framework_simplejwt',
+    'guardian',
     
 ]
 
@@ -162,7 +163,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
@@ -187,6 +188,8 @@ DJOSER={
         'user_delete': 'app.serializers.UserDeleteSerializer',
     }
 }
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -229,3 +232,7 @@ SITE_NAME = os.getenv('SITE_NAME')
 
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+]

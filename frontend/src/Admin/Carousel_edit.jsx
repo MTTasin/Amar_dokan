@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import useFetch from "../useFetch";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../features/auth/authSlice";
+import axios from "axios";
 
 export default function Carousel_edit() {
   const [carousel, setCarousel] = useState([]);
@@ -32,11 +35,24 @@ export default function Carousel_edit() {
 
   }, [response]);
 
+
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        dispatch(getUserInfo());
+    }, [dispatch]);
+
   function handleClick(id) {
-    fetch(`http://192.168.0.105:8000/carousels/${id}/`, {
-      method: "DELETE",
-    })
-      .then((response) => response.json());
+    axios
+      .delete(`http://192.168.0.105:8000/carousels/${id}/`, {
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": `JWT ${user.access}`,
+          "Accept": "application/json",
+        },
+      })
+      .then(() => fetchData())
       
   }
 
