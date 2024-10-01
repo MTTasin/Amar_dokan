@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Carousel, UserAccount
+from .models import Carousel, UserAccount, Product
 from django.utils.translation import gettext_lazy as _
 # Register your models here.
 
@@ -7,6 +7,11 @@ from django.utils.translation import gettext_lazy as _
 @admin.register(Carousel)
 class CarouselAdmin(admin.ModelAdmin):
     list_display = ('name', 'link')
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('title', 'price', 'stock')
 
 
 @admin.register(UserAccount)

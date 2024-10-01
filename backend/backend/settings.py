@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'rest_framework_simplejwt',
-    'guardian',
+    
     
 ]
 
@@ -134,9 +134,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'templates/assets/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates/assets'),
+    os.path.join(BASE_DIR, 'media/static'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -232,7 +232,3 @@ SITE_NAME = os.getenv('SITE_NAME')
 
 
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'guardian.backends.ObjectPermissionBackend',
-]

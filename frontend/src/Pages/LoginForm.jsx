@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login, reset, getUserInfo } from "../features/auth/authslice";
+import { login, reset, getUserInfo } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Loader/Loader";

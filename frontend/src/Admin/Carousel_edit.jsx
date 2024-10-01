@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../features/auth/authSlice";
 import axios from "axios";
+import Loader from "../Components/Loader/Loader";
 
 export default function Carousel_edit() {
   const [carousel, setCarousel] = useState([]);
@@ -69,13 +70,36 @@ export default function Carousel_edit() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `JWT ${user.access}`,
+        "Accept": "application/json",
       },
       body: JSON.stringify(caroudata),
     })
-      .then((response) => response.json())
       .then(() => fetchData())
-      .then(setCaroudata({ name: "", image: "", link: "" }));
+      .then(setCaroudata({
+        name: "",
+        image: "",
+        link: "",
+      }))
   }
+
+
+  // function handlesubmit(e) {
+  //   e.preventDefault();
+  //   axios
+  //     .post(`http://192.168.0.105:8000/carousels/`, {
+  //       headers: {
+  //         "Content-type": "application/json",
+  //         "Authorization": `JWT ${user.access}`,
+  //         "Accept": "application/json",
+  //       },
+  //       body: JSON.stringify(caroudata),
+  //     })
+  //     .then(() => fetchData());
+  //     }
+
+
+
 
   function addclick() {
     if (caroudata.name === "" || caroudata.image === "") {
@@ -113,6 +137,13 @@ export default function Carousel_edit() {
 
   return (
     <>
+     <div className="relative">
+        {loading && (
+          <div className="flex justify-center items-center h-[80vh] w-[100vw] z-10 absolute">
+            <Loader />
+          </div>
+        )}
+        <div className={loading ? "opacity-10 z-0" : "my-auto"}>
       <h1 className="text-3xl text-center font-bold">Manage the Carousels</h1>
       <div className="divider"></div>
 
@@ -132,9 +163,9 @@ export default function Carousel_edit() {
       <dialog id="carousel" className="modal">
         <div className="modal-box">
         <form action="" onSubmit={handlesubmit} className="flex flex-col gap-4">
-        <input  type="text" placeholder="Image Link" name="image" value={caroudata.image} className="input input-bordered w-full max-w-xs mx-auto text-white" onChange={(e) => setCaroudata({ ...caroudata, image: e.target.value })} />
-        <input  type="text" placeholder="Name" name="name" value={caroudata.name} className="input input-bordered w-full max-w-xs mx-auto text-white" onChange={(e) => setCaroudata({ ...caroudata, name: e.target.value })} />
-        <input type="text" placeholder="Link" name="link" value={caroudata.link} className="input input-bordered w-full max-w-xs mx-auto text-white" onChange={(e) => setCaroudata({ ...caroudata, link: e.target.value })} />
+        <input  type="text" placeholder="Image Link" name="image" value={caroudata.image} className="input input-bordered w-full max-w-xs mx-auto" onChange={(e) => setCaroudata({ ...caroudata, image: e.target.value })} />
+        <input  type="text" placeholder="Name" name="name" value={caroudata.name} className="input input-bordered w-full max-w-xs mx-auto" onChange={(e) => setCaroudata({ ...caroudata, name: e.target.value })} />
+        <input type="text" placeholder="Link" name="link" value={caroudata.link} className="input input-bordered w-full max-w-xs mx-auto" onChange={(e) => setCaroudata({ ...caroudata, link: e.target.value })} />
         {alert && <p className="text-red-500">Please fill all the fields</p>}
         <button type="submit" className="btn btn-primary w-full mx-auto max-w-xs mt-4" onClick={addclick}>Add</button>
         </form>
@@ -150,6 +181,8 @@ export default function Carousel_edit() {
 
 
       <div>{data}</div>
+      </div>
+      </div>
     </>
   );
 }

@@ -8,7 +8,7 @@ from django.contrib.auth.models import User, AbstractBaseUser, PermissionsMixin,
 class Carousel(models.Model):
     name = models.CharField(max_length=100)
     image = models.CharField(max_length=1000)
-    link = models.CharField(max_length=100, blank=True, null=True)
+    link = models.CharField(max_length=1000, blank=True, null=True)
 
 
     def __str__(self):
@@ -25,17 +25,19 @@ class Product(models.Model):
     discountPercentage = models.DecimalField(max_digits=5, decimal_places=2)
     rating = models.DecimalField(max_digits=3, decimal_places=2)
     stock = models.IntegerField()
-    tags = models.CharField(max_length=100)
-    brand = models.CharField(max_length=100)
+    tags = models.JSONField()
+    brand = models.CharField(max_length=100, blank=True, null=True)
     sku = models.CharField(max_length=100)
     weight = models.DecimalField(max_digits=5, decimal_places=2)
     dimensions = models.JSONField()
     warrantyInformation = models.CharField(max_length=100)
     shippingInformation = models.CharField(max_length=100)
     availabilityStatus = models.CharField(max_length=100)
-    reviews = models.ManyToManyField("ProductReview", verbose_name=("reviews"))
+    reviews = models.JSONField()
     returnPolicy = models.CharField(max_length=100)
     minimumOrderQuantity = models.IntegerField()
+    images= models.JSONField()
+    thumbnail = models.CharField(max_length=1000)
 
 
 
@@ -95,7 +97,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'date_joined', 'is_staff', 'is_active']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def get_full_name(self):
         return self.first_name + ' ' + self.last_name

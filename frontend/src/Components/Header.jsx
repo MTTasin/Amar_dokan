@@ -4,7 +4,7 @@ import { Input, CloseButton } from "@mantine/core";
 import { NavLink, useNavigate } from "react-router-dom";
 import LoginForm from "../Pages/LoginForm";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, reset } from "../features/auth/authslice";
+import { logout, reset } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 
 

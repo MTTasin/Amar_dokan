@@ -1,8 +1,8 @@
-from .models import Carousel
+from .models import Carousel, Product
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
-from rest_framework_guardian.serializers import ObjectPermissionsAssignmentMixin
+
 
 
 User = get_user_model()
@@ -14,7 +14,7 @@ class UserSerializer(UserCreateSerializer):
         fields = ('id', 'email', 'first_name', 'last_name', 'is_active', 'is_staff, is_superuser')
 
 
-class CarouselSerializer(ObjectPermissionsAssignmentMixin, serializers.ModelSerializer):
+class CarouselSerializer(serializers.ModelSerializer):
     class Meta:
         model = Carousel
         fields = '__all__'
@@ -30,3 +30,10 @@ class CarouselSerializer(ObjectPermissionsAssignmentMixin, serializers.ModelSeri
             'add_carousel': [supervisors, staffs],
             'delete_carousel': [supervisors, staffs],
         }
+    
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'

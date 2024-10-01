@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { activate, reset } from '../features/auth/authslice'
+import { activate, reset } from '../features/auth/authSlice'
 import { toast } from 'react-toastify'
 
 
@@ -41,8 +41,8 @@ const Activate = () => {
 
     return (
         <div>
-            <div className="main">
-                <h1 className="text-center text-3xl">Activate Account</h1>
+            <div className="flex flex-col justify-center items-center">
+                <h1 className="text-center text-4xl font-serif font-bold mt-5">Activate Account</h1>
 
                 
 

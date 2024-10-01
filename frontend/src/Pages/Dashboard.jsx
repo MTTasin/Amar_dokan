@@ -2,38 +2,82 @@ import { getUserInfo } from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import Loader from "../Components/Loader/Loader";
 
 export default function Dashboard() {
-    const [userData, setUserData] = useState({});
-    const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [userData, setUserData] = useState({});
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const [products, setProducts] = useState([]);
 
-    useEffect(() => {
-        dispatch(getUserInfo());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(getUserInfo());
+  }, [dispatch]);
 
-    
+  const fetchUserData = () => {
+    setLoading(true);
+    setError(null);
+    axios
+      .get("http://192.168.0.105:8000/auth/users/me/", {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `JWT ${user.access}`,
+          Accept: "application/json",
+        },
+      })
+      .then((res) => {
+        setUserData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  };
 
-    useEffect(() => {
-        axios
-            .get("http://192.168.0.105:8000/auth/users/me/", {
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": `JWT ${user.access}`,
-                    "Accept": "application/json",
-                },
-            })
-            .then((res) => {
-                setUserData(res.data);
-            });
-    }, []);
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
+  const fetchProducts = () => {
+    setLoading(true);
+    setError(null);
+    axios
+      .get("http://192.168.0.105:8000/products/", {
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+      .then((res) => {
+        setProducts(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  };
 
-    return (
-        <div>
-            <h1>Dashboard</h1>
-            <p>Welcome {userData.first_name}</p>
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  return (
+    <>
+      <div className="relative">
+        {loading && (
+          <div className="flex justify-center items-center h-[80vh] w-[100vw] z-10 absolute">
+            <Loader />
+          </div>
+        )}
+        <div className={loading ? "opacity-10 z-0" : "my-auto"}>
+          <h1>Dashboard</h1>
+          <p>Welcome {userData.first_name}</p>
+          <p>total products: {products.length}</p>
         </div>
-    );
+      </div>
+    </>
+  );
 }
