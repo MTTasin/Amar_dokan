@@ -54,7 +54,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="navbar bg-base-300 bg-opacity-15 sticky top-0 z-50 dark:text-white">
+      <div className="navbar bg-base-300 bg-opacity-80 sticky top-0 z-50 dark:text-white">
         <div className="navbar-start">
           <div className="dropdown z-50">
             <div
