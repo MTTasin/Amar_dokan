@@ -1,5 +1,6 @@
 import { FaStar, FaRegStarHalfStroke } from "react-icons/fa6";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Card(props) {
     const [cartbutton, setCartbutton] = useState(0)
@@ -30,7 +31,7 @@ export default function Card(props) {
             {tags}
         </div>
         <div className="card-actions justify-center">
-            <button className="btn btn-primary w-full mt-5">View Details</button>
+            <Link to={`/product/${props.id}`}  className="btn btn-primary w-full mt-5">View Details</Link>
 
 
             {cartbutton === 0 ? (<button className="btn btn-secondary w-full mt-3" onClick={() => setCartbutton(cartbutton + 1)}>Add to cart</button>)

@@ -36,6 +36,8 @@ import { ToastContainer } from "react-toastify";
 
 import NotFound from "./Pages/404";
 
+import ProductDetails from "./Pages/ProductDetails";
+
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
@@ -52,6 +54,7 @@ export default function App() {
             <Route exact path="/login" element={<LoginForm />} />
             <Route exact path="/signup" element={<RegisterForm />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route exact path="/product/:id" element={<ProductDetails />} />
             <Route path="*" element={<NotFound />} />
             <Route
               exact

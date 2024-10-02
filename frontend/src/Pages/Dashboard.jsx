@@ -9,37 +9,15 @@ export default function Dashboard() {
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState({});
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, userInfo } = useSelector((state) => state.auth);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     dispatch(getUserInfo());
   }, [dispatch]);
 
-  const fetchUserData = () => {
-    setLoading(true);
-    setError(null);
-    axios
-      .get("http://192.168.0.105:8000/auth/users/me/", {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `JWT ${user.access}`,
-          Accept: "application/json",
-        },
-      })
-      .then((res) => {
-        setUserData(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  };
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  console.log(userInfo)
 
   const fetchProducts = () => {
     setLoading(true);
@@ -74,7 +52,7 @@ export default function Dashboard() {
         )}
         <div className={loading ? "opacity-10 z-0" : "my-auto"}>
           <h1>Dashboard</h1>
-          <p>Welcome {userData.first_name}</p>
+          <p>Welcome {userInfo.first_name} {userInfo.last_name}</p>
           <p>total products: {products.length}</p>
         </div>
       </div>
