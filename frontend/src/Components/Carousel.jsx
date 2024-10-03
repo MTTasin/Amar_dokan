@@ -62,6 +62,7 @@ export default function Carou() {
       <h1 className="text-center text-3xl text-red-500">This project is still under developement</h1>
       <h1 className="text-center text-3xl text-red-500">It will be completed very soon</h1>
       <h1 className="text-center text-3xl text-blue-500">Till then you can check out the features implemented.</h1>
+      <h1 className="text-center text-3xl text-green-500">Last updated on 10th September 2024</h1>
     </>
   );
 }

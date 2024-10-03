@@ -9,7 +9,7 @@ export default function Card(props) {
 
     const tags = props.tags.map((tag) => {
         return (
-            <div className="badge badge-outline hover:bg-yellow-300 hover:text-black ">{tag}</div>
+            <div key={tag} className="badge badge-outline hover:bg-yellow-300 hover:text-black ">{tag}</div>
         )
     })
 

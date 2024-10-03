@@ -3,7 +3,7 @@ import DetailsSwiper from "../Components/DetailsSwiper";
 import StarReview from "../Components/StarReview";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import GLightbox from "glightbox";
+
 
 export default function ProductDetails() {
     const params = useParams()
@@ -22,6 +22,9 @@ export default function ProductDetails() {
 
     }, [ params.id ])
 
+
+    console.log(data)
+
     const swiper = () => {
         return (
             <DetailsSwiper key={data.id} />
@@ -31,12 +34,15 @@ export default function ProductDetails() {
     return(
         <>
         <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-base-300 h-[80vh]">
                 <div className="text-center my-auto md:order-1 order-2"><h1 className="text-red-500 md:text-7xl text-3xl">{data.title}</h1>
-                <p className="text-xl mt-5">{data.description}</p>
+                <p className="text-xl mt-10">{data.description}</p>
                 <div className="flex justify-center"><StarReview rating={data.rating} /><span className="text-yellow-500 mt-4 ml-2">{data.rating}</span></div>
                 </div>
-                <div className="md:order-2 order-1">{swiper()}</div>
+                <div className="md:order-2 order-1 my-auto"><div className="w-1/2 mx-auto">{swiper()}</div></div>
+            </div>
+            <div>
+                
             </div>
         </div>
             
