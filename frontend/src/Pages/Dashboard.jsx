@@ -17,8 +17,6 @@ export default function Dashboard() {
   }, [dispatch]);
 
 
-  console.log(userInfo)
-
   const fetchProducts = () => {
     setLoading(true);
     setError(null);

@@ -34,3 +34,15 @@
 
     
   }
+
+
+.swiper-pagination-bullet {
+    background-color: grey;
+    opacity: 1;
+  }
+
+.swiper-pagination-bullet-active {
+    background-color: red;
+    border: 2px solid  blue;
+    transform: scale(1.5);
+  }

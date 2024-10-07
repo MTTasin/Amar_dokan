@@ -30,7 +30,7 @@ export default function Card(props) {
         <div className="card-actions justify-end">
             {tags}
         </div>
-        <div className="card-actions justify-center">
+        <div className="card-actions justify-center w-full bottom-1">
             <Link to={`/product/${props.id}`}  className="btn btn-primary w-full mt-5">View Details</Link>
 
 

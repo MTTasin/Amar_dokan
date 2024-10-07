@@ -6,17 +6,14 @@ import LoginForm from "../Pages/LoginForm";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
-
-
+import { CgProfile } from "react-icons/cg";
 
 export default function Header() {
   const [opened, setOpened] = useState(false);
   const ref = useClickOutside(() => setOpened(false));
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector(
-    (state) => state.auth
-  );
+  const { user, userInfo } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -82,24 +79,21 @@ export default function Header() {
               className="menu  dropdown-content bg-base-300 rounded-box mt-3 w-56 shadow text-xl"
             >
               <li>
-                <NavLink to="/" className="py-4">Home</NavLink>
+                <NavLink to="/" className="py-4">
+                  Home
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/About" className="py-4">About</NavLink>
+                <NavLink to="/About" className="py-4">
+                  About
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/Carousel_edit" className="py-4">Edit the Carousel</NavLink>
+                <NavLink to="/Carousel_edit" className="py-4">
+                  Edit the Carousel
+                </NavLink>
               </li>
-               {user && (
-                 <li><NavLink to="/dashboard" className="py-4">Dashboard</NavLink></li>
-               )}
-              
-             {user ? (
-               <li><NavLink to="/" onClick={handleLogout} className="py-4">Logout</NavLink></li>
-             ):(
-              <li><NavLink to="/login" className="py-4">Login</NavLink></li>
-             )}
-              
+
               <li>{themeController()}</li>
             </ul>
           </div>
@@ -136,36 +130,41 @@ export default function Header() {
               />
             </svg>
           </button>
-          <button className="btn btn-ghost btn-circle">
+          <button className="btn btn-ghost btn-circle dropdown dropdown-left dropdown-bottom">
             <div className="indicator">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                />
-              </svg>
-              <span className="badge badge-xs badge-primary indicator-item"></span>
+              <CgProfile className="text-2xl" />
+              {/* <span className="badge badge-xs badge-primary indicator-item"></span> */}
             </div>
+            <ul className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+              <li>
+                <p>
+                  {userInfo.first_name} {userInfo.last_name}
+                </p>
+              </li>
+              {user && (
+                <li>
+                  <NavLink to="/dashboard" className="py-4">
+                    Dashboard
+                  </NavLink>
+                </li>
+              )}
+              {user ? (
+                <li>
+                  <NavLink to="/login" onClick={handleLogout} className="py-4">
+                    Logout
+                  </NavLink>
+                </li>
+              ) : (
+                <li>
+                  <NavLink to="/login" className="py-4">
+                    Login
+                  </NavLink>
+                </li>
+              )}
+            </ul>
           </button>
         </div>
       </div>
-
-
-
     </>
   );
 }
-
-
-
-
-
-
