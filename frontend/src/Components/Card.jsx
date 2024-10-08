@@ -27,10 +27,10 @@ export default function Card(props) {
           <div className="badge bg-yellow-300 text-black"><span>{props.rating > 4 ? <FaStar /> : <FaRegStarHalfStroke />}</span>{props.rating}</div>
         </h2>
         <div className="text-gray-500 card-actions justify-start text-xl">${props.price}</div>
-        <div className="card-actions justify-end">
+        <div className="card-actions justify-end mt-auto">
             {tags}
         </div>
-        <div className="card-actions justify-center w-full bottom-1">
+        <div className="card-actions justify-center w-full mt-auto">
             <Link to={`/product/${props.id}`}  className="btn btn-primary w-full mt-5">View Details</Link>
 
 

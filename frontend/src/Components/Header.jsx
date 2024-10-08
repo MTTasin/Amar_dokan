@@ -4,7 +4,7 @@ import { Input, CloseButton } from "@mantine/core";
 import { NavLink, useNavigate } from "react-router-dom";
 import LoginForm from "../Pages/LoginForm";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, reset } from "../features/auth/authSlice";
+import { logout, reset, getUserInfo } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 import { CgProfile } from "react-icons/cg";
 
@@ -21,6 +21,10 @@ export default function Header() {
     navigate("/");
     toast.success("Logout Successful");
   };
+
+  useEffect(() => {
+    dispatch(getUserInfo());
+  }, [dispatch]);
 
   const themeController = () => {
     return (
@@ -137,9 +141,7 @@ export default function Header() {
             </div>
             <ul className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
               <li>
-                <p>
-                  {userInfo.first_name} {userInfo.last_name}
-                </p>
+                <p>{user ? `${userInfo.first_name} ${userInfo.last_name}` : "Guest user"}</p>
               </li>
               {user && (
                 <li>

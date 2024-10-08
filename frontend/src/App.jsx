@@ -38,6 +38,8 @@ import NotFound from "./Pages/404";
 
 import ProductDetails from "./Pages/ProductDetails";
 
+import CateProducts from "./Pages/cateProducts";
+
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
@@ -55,6 +57,7 @@ export default function App() {
             <Route exact path="/signup" element={<RegisterForm />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
             <Route exact path="/product/:id" element={<ProductDetails />} />
+            <Route exact path="/products/:category" element={<CateProducts />} />
             <Route path="*" element={<NotFound />} />
             <Route
               exact

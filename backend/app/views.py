@@ -51,10 +51,13 @@ class ProductViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         limit = self.request.query_params.get('limit')
         name = self.request.query_params.get('name')
+        category = self.request.query_params.get('category')
         if limit:
             return self.queryset.all()[:int(limit)]
         elif name:
             return self.queryset.filter(name__icontains=name)
+        elif category:
+            return self.queryset.filter(category__icontains=category)
         else:
             return self.queryset.all()
 
