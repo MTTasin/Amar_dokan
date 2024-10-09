@@ -40,6 +40,8 @@ import ProductDetails from "./Pages/ProductDetails";
 
 import CateProducts from "./Pages/cateProducts";
 
+import AllProducts from "./Pages/AllProducts";
+
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
@@ -49,6 +51,7 @@ export default function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/AllProducts" element={<AllProducts />} />
             <Route path="/About" element={<About />} />
             <Route path="/Carousel_edit" element={<Carousel_edit />} />
             <Route exact path="/activate/:uid/:token" element={<Activate />} />

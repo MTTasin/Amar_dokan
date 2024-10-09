@@ -1,4 +1,4 @@
-from .models import Carousel, Product
+from .models import Carousel, Product, featured
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
@@ -19,17 +19,11 @@ class CarouselSerializer(serializers.ModelSerializer):
         model = Carousel
         fields = '__all__'
 
-    def get_permissions_map(self, created):
-        current_user = self.context['request'].user
-        staffs = User.objects.filter(is_staff=True)
-        supervisors = User.objects.filter(is_superuser=True)
 
-        return {
-            'view_carousel': [current_user, supervisors, staffs],
-            'change_carousel': [supervisors, staffs],
-            'add_carousel': [supervisors, staffs],
-            'delete_carousel': [supervisors, staffs],
-        }
+class featuredSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = featured
+        fields = '__all__'
     
 
 
