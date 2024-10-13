@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Card from "../Components/Card";
 import Categories from "../Components/Categories";
 import Loader from "../Components/Loader/Loader";
-import Pagination from "../Components/pagination";
+
 
 
 export default function AllProducts() {
@@ -13,6 +13,7 @@ export default function AllProducts() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [reachedEnd, setReachedEnd] = useState(false);
 
   
 
@@ -43,16 +44,28 @@ export default function AllProducts() {
         },
       })
       .then((res) => {
-        setTotalProducts(res.data.count);
+        setTotalProducts(res.data.length);
       })
       .catch((err) => {
         setError(err.message);
       });
   };
 
+  
+
+  function totLimit() {
+    if ((currentPage+1) * 10 <= totalProducts) {
+      setReachedEnd(false);
+    } else {
+      setReachedEnd(true);
+    }
+  }
+
+
   useEffect(() => {
     fetchProducts();
     fetchTotalProducts();
+    totLimit();
   }, [currentPage]);
 
 
@@ -72,6 +85,19 @@ export default function AllProducts() {
     );
   });
 
+  console.log(products);
+  console.log(currentPage);
+  console.log(totalProducts);
+  console.log(reachedEnd);
+
+  const increasepage = () => {
+    setCurrentPage(currentPage + 1);
+    
+  };
+  const decreasepage = () => {
+    setCurrentPage(currentPage - 1);
+    scrollTo(0, 0);
+  };
 
 
 
@@ -90,7 +116,18 @@ export default function AllProducts() {
           </div>
 
 
-          
+          <div className="flex justify-center">
+            {currentPage > 0 ? (
+              <div className="btn btn-secondary w-[150px] m-5" onClick={decreasepage}>Previous</div>
+            ): (
+              <div className="btn btn-secondary w-[150px] m-5" disabled>Previous</div>
+            )}
+            {reachedEnd ? (
+              <div className="btn btn-secondary w-[150px] m-5" disabled>Next</div>
+            ): (
+              <div className="btn btn-secondary w-[150px] m-5" onClick={increasepage}>Next</div>
+            )}
+          </div>
    
         
 
