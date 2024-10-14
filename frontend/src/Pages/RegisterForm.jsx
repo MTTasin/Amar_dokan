@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { register, reset, getUserInfo } from "../features/auth/authslice";
+import { register, reset, getUserInfo } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Loader/Loader";
@@ -47,7 +47,7 @@ export default function RegisterForm() {
 
   useEffect(() => {
     if (isSuccess || user) {
-      navigateReg("/dashboard");
+      navigateReg("/");
       toast.success(
         "Registration Successful, An activation link has been sent to your email"
       );
@@ -70,69 +70,84 @@ export default function RegisterForm() {
 
   return (
     <div className="relative">
-    {isLoading && <div className="flex justify-center items-center h-[80vh] w-[100vw] z-10 absolute"><Loader /></div>}
-    <div className={isLoading ? "opacity-10 z-0" : "my-auto"}>
-      <h2 className="text-center text-3xl font-bold mb-7 mt-4">Sign Up</h2>
-      <div className="flex flex-col items-center">
-        <form
-          className="flex flex-col gap-3 w-full max-w-md"
-          onSubmit={(event) => handleSubmit(event)}
-        >
-          <input
-            type="text"
-            name="first_name"
-            value={formData.name}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-            placeholder="First Name"
-          />
-          <input
-            type="text"
-            name="last_name"
-            value={formData.name}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-            placeholder="Last Name"
-          />
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-            placeholder="Email"
-          />
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="input input-bordered w-full signUpPass"
-            placeholder="Password"
-          />
-          <input
-            type="password"
-            name="re_password"
-            value={formData.re_password}
-            onChange={handleChange}
-            className="input input-bordered w-full signUpPass"
-            placeholder="Repeat Password"
-            onKeyUp={handlePassMatch}
-          />
+      {isLoading && (
+        <div className="flex justify-center items-center h-[80vh] w-[100vw] z-10 absolute">
+          <Loader />
+        </div>
+      )}
+      <div className={isLoading ? "opacity-10 z-0" : "my-auto"}>
+        <div className="grid grid-cols-5 place-items-center">
+          <div className="col-span-3 md:block hidden mx-auto">
+            <img src="/login.png" alt="" className="w-[50vw]" />
+          </div>
+          <div className="col-span-5 md:col-span-2">
+            <div className="flex flex-col items-center">
+              <form>
+                <h2 className="text-center text-3xl mb-7 mt-4">
+                  SignUp to Amar Dokan
+                </h2>
+                <div className="flex flex-col gap-3 w-full ">
+                  <input
+                    type="text"
+                    name="first_name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    placeholder="First Name"
+                    className="input input-bordered w-full"
+                  />
+                  <input
+                    type="text"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    placeholder="Last Name"
+                    className="input input-bordered w-full"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Email"
+                    className="input input-bordered w-full"
+                  />
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Password"
+                    className="input input-bordered w-full"
+                  />
+                  <input
+                    type="password"
+                    name="re_password"
+                    value={formData.re_password}
+                    onChange={handleChange}
+                    onKeyUp={handlePassMatch}
+                    placeholder="Re enter password"
+                    className="input input-bordered w-full"
+                  />
 
-          <h4 className="text-red-500 text-center">
-            {passMatch ? "Passwords do not match" : ""}
-          </h4>
-          <button type="submit" className="btn btn-primary">
-            Signup
-          </button>
-
-          <Link to="/login" className="text-center cursor-pointer mx-auto">
-            Already have an account? Login
-          </Link>
-        </form>
+                  {passMatch && (
+                    <p className="text-red-500">Passwords do not match</p>
+                  )}
+                  <button
+                    type="submit"
+                    onClick={handleSubmit}
+                    className="btn btn-primary"
+                  >
+                    Sign Up
+                  </button>
+                  <p className="text-center">Already have an account ? {" "}
+                    <Link to="/login" className="text-blue-500">Login</Link>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
     </div>
   );
 }

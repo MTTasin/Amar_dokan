@@ -44,6 +44,8 @@ import AllProducts from "./Pages/AllProducts";
 
 import "react-toastify/dist/ReactToastify.css";
 
+import Cart from "./Components/Cart";
+
 export default function App() {
   return (
     <MantineProvider defaultColorScheme="false">
@@ -69,6 +71,7 @@ export default function App() {
             />
           </Routes>
           <ToastContainer />
+          <Cart />
         </Layout>
       </Provider>
     </MantineProvider>

@@ -14,7 +14,7 @@ export default function Card(props) {
     })
 
   return (
-    <div className="card bg-base-900 w-96 shadow-xl hover:scale-105 hover:transition hover:duration-200 hover:ease-in">
+    <div className="card bg-base-900 w-96 shadow-xl hover:scale-105 hover:transition hover:duration-200 hover:ease-in z-0">
       <figure>
         <img
           src={props.img}

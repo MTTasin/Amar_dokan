@@ -1,17 +1,23 @@
 import { FaFacebook, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
-    return (
-        <footer className="text-center py-10">
-      <div className="p-4 mt-4 text-white bg-base-300 grid grid-cols-2 md:grid-cols-5">
+  return (
+    <footer className="text-center py-10">
+      <div className="p-4 mt-4 bg-base-300 grid grid-cols-1 md:grid-cols-5">
         <div className="mt-4">
-          <h1 className="text-4xl">Amar Dokan</h1>
+          <h1 className="text-4xl font-abu">Amar Dokan</h1>
         </div>
         <div className="mt-4">
           <h2 className="text-2xl">Exclusive</h2>
           <ul className="">
             <li className="mt-2">Subscribe</li>
-            <li className="mt-2"><input type="email" placeholder="Enter your email" className="input input-bordered" /></li>
+            <li className="mt-2">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="input input-bordered w-2/3"
+              />
+            </li>
           </ul>
         </div>
         <div className="mt-4">
@@ -50,5 +56,5 @@ export default function Footer() {
         | All Rights Reserved
       </div>
     </footer>
-    );
+  );
 }
