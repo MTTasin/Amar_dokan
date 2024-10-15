@@ -93,21 +93,6 @@ const resetPasswordConfirm = async (userData) => {
   return response.data;
 };
 
-// Get User Info
-
-// const getUserInfo = async (accessToken) => {
-//   const config = {
-//     headers: {
-//       "Content-type": "application/json",
-//       Authorization: `JWT ${localStorage.getItem("access")}`,
-//       Accept: "application/json",
-//     },
-//   };
-
-//   const response = await axios.get(GET_USER_INFO, config);
-
-//   return response.data;
-// };
 
 const getUserInfo = async (accessToken) => {
   const config = {

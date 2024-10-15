@@ -46,6 +46,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Cart from "./Components/Cart";
 
+import Profile from "./Pages/Profile";
+
 export default function App() {
   return (
     <MantineProvider defaultColorScheme="false">
@@ -63,6 +65,7 @@ export default function App() {
             <Route exact path="/dashboard" element={<Dashboard />} />
             <Route exact path="/product/:id" element={<ProductDetails />} />
             <Route exact path="/products/:category" element={<CateProducts />} />
+            <Route exact path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
             <Route
               exact

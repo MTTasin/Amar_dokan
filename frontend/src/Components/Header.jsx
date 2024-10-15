@@ -141,7 +141,8 @@ export default function Header() {
             </div>
             <ul className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
               <li>
-                <p>{user ? `${userInfo.first_name} ${userInfo.last_name}` : "Guest user"}</p>
+                
+                {user ? (<NavLink to="/profile"><p>{userInfo.first_name} {userInfo.last_name}</p></NavLink>) : (<p>Guest user</p>)}
               </li>
               {user && (
                 <li>
