@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { logout, reset, getUserInfo } from "../features/auth/authSlice";
+import { getUserInfo } from "../features/auth/authSlice";
 import { useEffect } from "react";
 
 

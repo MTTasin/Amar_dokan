@@ -56,6 +56,8 @@ export default function AllProducts() {
   function totLimit() {
     if ((currentPage+1) * 10 <= totalProducts) {
       setReachedEnd(false);
+    } else if (currentPage === 0) {
+      setReachedEnd(false);
     } else {
       setReachedEnd(true);
     }
@@ -70,7 +72,6 @@ export default function AllProducts() {
 
 
 
-
   const CardData = products.map((product) => {
     return (
       <Card
@@ -81,17 +82,16 @@ export default function AllProducts() {
         price={product.price}
         tags={product.tags}
         rating={product.rating}
+        sku={product.sku}
       />
     );
   });
 
-  console.log(products);
-  console.log(currentPage);
-  console.log(totalProducts);
-  console.log(reachedEnd);
+
 
   const increasepage = () => {
     setCurrentPage(currentPage + 1);
+    scrollTo(0, 0);
     
   };
   const decreasepage = () => {

@@ -1,4 +1,4 @@
-from .serializers import CarouselSerializer, ProductSerializer
+from .serializers import CarouselSerializer, ProductSerializer, CartItemSerializer
 from .models import Carousel, Product
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -54,6 +54,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         limit = self.request.query_params.get('limit')
         name = self.request.query_params.get('name')
         category = self.request.query_params.get('category')
+        sku = self.request.query_params.get('sku')
         pagination = self.request.query_params.get('page')
         
 
@@ -63,6 +64,8 @@ class ProductViewSet(viewsets.ModelViewSet):
             return self.queryset.filter(name__icontains=name)
         elif category:
             return self.queryset.filter(category__icontains=category)
+        elif sku:
+            return self.queryset.filter(sku__icontains=sku)
         elif pagination:
             return self.queryset.all()[int(pagination)*10:int(pagination)*10+10]
         else:

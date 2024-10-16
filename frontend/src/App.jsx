@@ -44,7 +44,7 @@ import AllProducts from "./Pages/AllProducts";
 
 import "react-toastify/dist/ReactToastify.css";
 
-import Cart from "./Components/Cart";
+import CartPage from "./Pages/CartPage";
 
 import Profile from "./Pages/Profile";
 
@@ -66,6 +66,7 @@ export default function App() {
             <Route exact path="/product/:id" element={<ProductDetails />} />
             <Route exact path="/products/:category" element={<CateProducts />} />
             <Route exact path="/profile" element={<Profile />} />
+            <Route exact path="/cart" element={<CartPage />} />
             <Route path="*" element={<NotFound />} />
             <Route
               exact
@@ -74,7 +75,7 @@ export default function App() {
             />
           </Routes>
           <ToastContainer />
-          <Cart />
+          
         </Layout>
       </Provider>
     </MantineProvider>

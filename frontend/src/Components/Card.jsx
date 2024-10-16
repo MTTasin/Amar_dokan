@@ -1,10 +1,20 @@
 import { FaStar, FaRegStarHalfStroke } from "react-icons/fa6";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+
 
 export default function Card(props) {
-    const [cartbutton, setCartbutton] = useState(0)
+    const [cartbutton, setCartbutton] = useState(false);
+    const [Cart, setCart] = useState([]);
 
+function addToCart() {
+    if (cartbutton) {
+        setCartbutton(false);
+    } else {
+        setCartbutton(true);
+    }
+  }
     
 
     const tags = props.tags.map((tag) => {
@@ -34,14 +44,11 @@ export default function Card(props) {
             <Link to={`/product/${props.id}`}  className="btn btn-primary w-full mt-5">View Details</Link>
 
 
-            {cartbutton === 0 ? (<button className="btn btn-secondary w-full mt-3" onClick={() => setCartbutton(cartbutton + 1)}>Add to cart</button>)
-            : (
-<div className="flex justify-evenly w-full">
-                <span><button className="btn btn-secondary w-full rounded-full mt-3" onClick={() => setCartbutton(cartbutton - 1)}>-</button></span>
-                <span><p className="text-3xl mt-3">{cartbutton}</p></span>
-                <span><button className="btn btn-primary w-full rounded-full mt-3" onClick={() => setCartbutton(cartbutton + 1)}>+</button></span>
-            </div>
-            ) }
+            {cartbutton ? (
+            <button className="btn btn-error w-full mt-5" onClick={addToCart}>Remove from Cart</button>
+            ) : (
+            <button className="btn btn-secondary w-full mt-5" onClick={addToCart}>Add to Cart</button>
+            )}
 
 
 

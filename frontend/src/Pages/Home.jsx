@@ -43,6 +43,7 @@ export default function Home() {
         price={product.price}
         tags={product.tags}
         rating={product.rating}
+        sku={product.sku}
       />
     );
   });

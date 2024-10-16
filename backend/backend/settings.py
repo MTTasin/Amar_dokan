@@ -233,3 +233,4 @@ SITE_NAME = os.getenv('SITE_NAME')
 
 
 
+CART_SESSION_ID = 'cart'

@@ -1,16 +1,16 @@
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-import Cart from "../Components/Cart";
+import Cart from "../Components/CartIcon";
 
 export default function Layout({ children }) {
-    return (
-        <>
-            <div className="font-siliguri">
-            <Header />
-            <div className="z-50"><Cart /></div>
-            {children}
-            <Footer />
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div className="font-siliguri flex flex-col h-screen">
+        <Header />
+        <Cart />
+        <div className="flex-grow">{children}</div>
+        <div className="bottom-0"><Footer /></div>
+      </div>
+    </>
+  );
 }
