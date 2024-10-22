@@ -64,7 +64,7 @@ export default function Home() {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-green-500 text-center">
-              Last Updated 8th September 2024
+              Last Updated 22th Octeber 2024
             </h1>
           </div>
 

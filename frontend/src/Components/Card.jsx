@@ -1,25 +1,32 @@
 import { FaStar, FaRegStarHalfStroke } from "react-icons/fa6";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useStateContext } from "../Context";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export default function Card(props) {
   const [cartbutton, setCartbutton] = useState(false);
+  const { cartItems, setCartItems } = useStateContext();
+  
 
-  function addToCart() {
-    if (cartbutton) {
-      setCartbutton(false);
-      Cookies.remove("id", props.id);
-
-    } else {
-      setCartbutton(true);
-      Cookies.set("id", [props.id], { expires: 7 });
-    }
+  const addToCart = () => {
+    setCartbutton(true);
+    setCartItems(prevItems => [...prevItems, props.id]);
+    Cookies.set("Id", [...cartItems, props.id]);
   }
 
+  const removeFromCart = () => {
+    setCartbutton(false);
+    setCartItems(prevItems => prevItems.filter(item => item !== props.id));
+    Cookies.set("Id", cartItems.filter(item => item !== props.id));
+  }
+
+  console.log(Cookies.get("Id"));
+  console.log(cartItems);
+  
+
   useEffect(() => {
-    const storeId = Cookies.get("id");
-    if (storeId == props.id) {
+    if (Cookies.get("Id").includes(props.id)) {
       setCartbutton(true);
     } else {
       setCartbutton(false);
@@ -67,7 +74,7 @@ export default function Card(props) {
           </Link>
 
           {cartbutton ? (
-            <button className="btn btn-error w-full mt-5" onClick={addToCart}>
+            <button className="btn btn-error w-full mt-5" onClick={removeFromCart}>
               Remove from Cart
             </button>
           ) : (
