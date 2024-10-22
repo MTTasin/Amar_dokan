@@ -12,21 +12,20 @@ export default function Card(props) {
   const addToCart = () => {
     setCartbutton(true);
     setCartItems(prevItems => [...prevItems, props.id]);
-    Cookies.set("Id", [...cartItems, props.id]);
+    Cookies.set("Id", [...cartItems, props.id], { expires: 7 });
   }
 
   const removeFromCart = () => {
     setCartbutton(false);
     setCartItems(prevItems => prevItems.filter(item => item !== props.id));
-    Cookies.set("Id", cartItems.filter(item => item !== props.id));
+    Cookies.set("Id", cartItems.filter(item => item !== props.id), { expires: 7 });
   }
 
-  console.log(Cookies.get("Id"));
-  console.log(cartItems);
   
 
   useEffect(() => {
-    if (Cookies.get("Id").includes(props.id)) {
+    const cookieIds = Cookies.get("Id") ? Cookies.get("Id").split(",") : [];
+    if (cookieIds.includes(props.id.toString())) {
       setCartbutton(true);
     } else {
       setCartbutton(false);
@@ -47,6 +46,7 @@ export default function Card(props) {
   });
 
   return (
+    <div>
     <div className="card bg-base-900 w-96 shadow-xl hover:scale-105 hover:transition hover:duration-200 hover:ease-in z-0">
       <figure>
         <img src={props.img} alt={props.title} />
@@ -87,6 +87,7 @@ export default function Card(props) {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 }

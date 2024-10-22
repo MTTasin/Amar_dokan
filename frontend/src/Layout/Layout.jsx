@@ -9,7 +9,7 @@ export default function Layout({ children }) {
         <Header />
         <Cart />
         <div className="flex-grow">{children}</div>
-        <div className="bottom-0"><Footer /></div>
+        <Footer />
       </div>
     </>
   );
