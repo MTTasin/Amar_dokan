@@ -8,6 +8,12 @@ export default function Card(props) {
   const [cartbutton, setCartbutton] = useState(false);
   const { cartItems, setCartItems } = useStateContext();
   
+  useEffect(() => {
+    const cartItemsFromCookie = Cookies.get("Id");
+    if (cartItemsFromCookie) {
+      setCartItems(cartItemsFromCookie.split(","));
+    }
+  }, []);
 
   const addToCart = () => {
     setCartbutton(true);
@@ -20,6 +26,8 @@ export default function Card(props) {
     setCartItems(prevItems => prevItems.filter(item => item !== props.id));
     Cookies.set("Id", cartItems.filter(item => item !== props.id), { expires: 7 });
   }
+
+  console.log(Cookies.get("Id"))
 
   
 

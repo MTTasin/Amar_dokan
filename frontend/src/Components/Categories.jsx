@@ -1,4 +1,4 @@
-import { randomId } from "@mantine/hooks";
+import { useId } from "react";
 import "./Categories.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -12,6 +12,8 @@ import { Button } from "@mantine/core";
 export default function Categories() {
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
+
+  const randomId = useId();
 
   useEffect(() => {
     axios
@@ -29,7 +31,7 @@ export default function Categories() {
   const categoryCard = categories.map((category) => {
     return (
       <>
-        <Link key={randomId()} to={`/products/${category}`}>
+        <Link key={randomId} to={`/products/${category}`}>
           <div className="card bg-white hover:bg-slate-300 w-32 h-48 shadow-xl">
             <figure className="px-10 pt-10">
               <img

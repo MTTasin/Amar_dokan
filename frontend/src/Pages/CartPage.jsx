@@ -59,6 +59,18 @@ export default function CartPage() {
     );
   };
 
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      setCartItems((prevCartItems) =>
+        prevCartItems.filter((item) => item.id !== id)
+      );
+      const updatedCartCode = cartCode.filter((code) => code !== id);
+      setCartCode(updatedCartCode); // Update the cartCode state
+      Cookies.set("Id", updatedCartCode.join(","), { expires: 7 });
+    }
+  };
+
+
   const totalPriceCalc = () => {
     let total = 0;
     cartItems.forEach((item) => {
@@ -66,6 +78,8 @@ export default function CartPage() {
     });
     setTotalPrice(total.toFixed(2));
   };
+
+
 
   useEffect(() => {
     fetchData();
@@ -110,6 +124,7 @@ export default function CartPage() {
             </div>
             <div className="flex items-center space-x-4">
             <p className="text-sm">$ {(item.price * item.quantity).toFixed(2)}</p>
+              <div onClick={() => handleDelete(item.id)} >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -124,6 +139,7 @@ export default function CartPage() {
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -133,7 +149,8 @@ export default function CartPage() {
 
   return (
     <>
-      <div className="pt-20">
+      {cartItems.Id === undefined ? (
+        <div className="pt-20">
         <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
         <div className="mx-auto max-w-5xl justify-center px-6  md:flex md:space-x-6 xl:px-0">
           <div className="rounded-lg md:w-2/3">{cartitem}</div>
@@ -161,6 +178,11 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+      ):(
+        <div>
+          <h1 className="pt-20 text-center text-2xl font-bold">Your cart is empty</h1>
+        </div>
+      )}
     </>
   );
 }
