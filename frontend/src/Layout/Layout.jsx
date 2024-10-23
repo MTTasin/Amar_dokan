@@ -8,7 +8,7 @@ export default function Layout({ children }) {
       <div className="font-siliguri flex flex-col h-screen">
         <Header />
         <Cart />
-        <div className="flex-grow">{children}</div>
+        <div className="grow">{children}</div>
         <Footer />
       </div>
     </>
