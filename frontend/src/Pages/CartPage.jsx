@@ -59,17 +59,19 @@ export default function CartPage() {
     );
   };
 
+
+
   const handleDelete = (id) => {
+    const cookieIds = Cookies.get("Id") ? Cookies.get("Id").split(",") : [];
+
     if (window.confirm("Are you sure you want to delete this item?")) {
       setCartItems((prevCartItems) =>
         prevCartItems.filter((item) => item.id !== id)
       );
-      const updatedCartCode = cartCode.filter((code) => code !== id);
-      setCartCode(updatedCartCode); // Update the cartCode state
-      Cookies.set("Id", updatedCartCode.join(","), { expires: 7 });
+      setCartCode(cookieIds.filter((cookieId) => cookieId !== id.toString()));
+      Cookies.set("Id", cookieIds.filter((cookieId) => cookieId !== id.toString()), { expires: 7 });
     }
   };
-
 
   const totalPriceCalc = () => {
     let total = 0;
@@ -89,7 +91,7 @@ export default function CartPage() {
     totalPriceCalc();
   }, [cartItems]);
 
-  console.log(cartItems);
+  console.log(Cookies.get("Id"));
 
   const cartitem = cartItems.map((item) => {
     return (
