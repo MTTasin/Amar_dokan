@@ -23,8 +23,9 @@ export default function Card(props) {
 
   const removeFromCart = () => {
     setCartbutton(false);
-    setCartItems(prevItems => prevItems.filter(item => item !== props.id));
-    Cookies.set("Id", cartItems.filter(item => item !== props.id), { expires: 7 });
+    const cookieIds = Cookies.get("Id") ? Cookies.get("Id").split(",") : [];
+    setCartItems(cookieIds.filter(id => id !== props.id.toString()));
+    Cookies.set("Id", cookieIds.filter(id => id !== props.id.toString()), { expires: 7 });
   }
 
   console.log(Cookies.get("Id"))

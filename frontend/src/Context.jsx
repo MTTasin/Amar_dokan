@@ -4,9 +4,7 @@ const Context = createContext();
 
 export const StateContext = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
-    
-    
-
+ 
     return (
         <Context.Provider
             value={{
