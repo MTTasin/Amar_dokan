@@ -1,4 +1,4 @@
-from .models import Carousel, Product, featured, Cart, CartItem
+from .models import Carousel, Product, featured, Order
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
@@ -33,12 +33,8 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CartSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cart
-        fields = '__all__'
 
-class CartItemSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CartItem
+        model = Order
         fields = '__all__'

@@ -17,24 +17,27 @@ export default function Card(props) {
 
   const addToCart = () => {
     setCartbutton(true);
-    setCartItems(prevItems => [...prevItems, props.id]);
-    Cookies.set("Id", [...cartItems, props.id], { expires: 7 });
+    const cartItem = { id: props.id, quantity: 1 };
+    const existingCartItems = Cookies.get("cart") ? JSON.parse(Cookies.get("cart")) : [];
+    const updatedCartItems = [...existingCartItems, cartItem];
+    setCartItems(updatedCartItems);
+    Cookies.set("cart", JSON.stringify(updatedCartItems), { expires: 7 });
   }
-
+  
   const removeFromCart = () => {
     setCartbutton(false);
-    const cookieIds = Cookies.get("Id") ? Cookies.get("Id").split(",") : [];
-    setCartItems(cookieIds.filter(id => id !== props.id.toString()));
-    Cookies.set("Id", cookieIds.filter(id => id !== props.id.toString()), { expires: 7 });
+    const updatedCartItems = JSON.parse(Cookies.get("cart")).filter(item => item.id.toString() !== props.id.toString());
+    setCartItems(updatedCartItems);
+    Cookies.set("cart", JSON.stringify(updatedCartItems), { expires: 7 });
   }
 
-  console.log(Cookies.get("Id"))
 
   
 
   useEffect(() => {
-    const cookieIds = Cookies.get("Id") ? Cookies.get("Id").split(",") : [];
-    if (cookieIds.includes(props.id.toString())) {
+    const cartItems = Cookies.get("cart") ? JSON.parse(Cookies.get("cart")) : [];
+    const itemInCart = cartItems.find(item => item.id.toString() === props.id.toString());
+    if (itemInCart) {
       setCartbutton(true);
     } else {
       setCartbutton(false);

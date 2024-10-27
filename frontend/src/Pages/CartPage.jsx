@@ -4,26 +4,20 @@ import Cookies from "js-cookie";
 
 export default function CartPage() {
   const [cartCode, setCartCode] = useState(
-    Cookies.get("Id") ? Array.from(new Set(Cookies.get("Id").split(","))) : []
+    Cookies.get("cart") ? JSON.parse(Cookies.get("cart")) : []
   );
-  const [cartItems, setCartItems] = useState([
-    {
-      id: "",
-      title: "",
-      thumbnail: "",
-      price: "",
-      stock: "",
-      quantity: 1,
-    }
-  ]);
+  const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  
 
   const fetchData = async () => {
     if (!cartCode.length) return;
-
+    const cartID = cartCode.map(item => item.id);
+    
     try {
       const responses = await axios.all(
-        cartCode.map((id) =>
+        cartID.map((id) =>
           axios.get(`http://192.168.0.105:8000/products/${id}/`)
         )
       );
@@ -32,8 +26,7 @@ export default function CartPage() {
         title: response.data.title,
         thumbnail: response.data.thumbnail,
         price: response.data.price,
-        stock: response.data.stock,
-        quantity: 1, // Assuming a default quantity of 1
+        stock: response.data.stock
       }));
       setCartItems(limitedCartItems);
       
@@ -91,7 +84,8 @@ export default function CartPage() {
     totalPriceCalc();
   }, [cartItems]);
 
-  console.log(Cookies.get("Id"));
+  
+
 
   const cartitem = cartItems.map((item) => {
     return (

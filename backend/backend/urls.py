@@ -28,6 +28,7 @@ from django.conf import settings
 router = routers.DefaultRouter()
 router.register(r'carousels', CarouselViewSet)
 router.register(r'products', ProductViewSet)
+router.register(r'orders', OrderViewSet)
 
 
 urlpatterns = [

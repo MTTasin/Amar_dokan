@@ -1,5 +1,5 @@
-from .serializers import CarouselSerializer, ProductSerializer, CartItemSerializer
-from .models import Carousel, Product
+from .serializers import CarouselSerializer, ProductSerializer, OrderSerializer
+from .models import Carousel, Product, Order
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
@@ -71,3 +71,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         else:
             return self.queryset.all()
 
+class OrderViewSet(viewsets.ModelViewSet):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+    permission_classes = [IsOwnerOrReadOnly]
