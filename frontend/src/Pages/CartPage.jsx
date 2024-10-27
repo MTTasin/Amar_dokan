@@ -26,13 +26,13 @@ export default function CartPage() {
         title: response.data.title,
         thumbnail: response.data.thumbnail,
         price: response.data.price,
-        stock: response.data.stock
+        stock: response.data.stock,
+        quantity: cartCode.find((item) => item.id === response.data.id).quantity
       }));
       setCartItems(limitedCartItems);
       
     } catch (error) {
       console.error("Error fetching cart items:", error);
-      // Display error message to the user (optional)
     }
   };
 
@@ -55,7 +55,7 @@ export default function CartPage() {
 
 
   const handleDelete = (id) => {
-    const cookieIds = Cookies.get("Id") ? Cookies.get("Id").split(",") : [];
+    const cookieIds = Cookies.get("cart") ? JSON.parse(Cookies.get("cart")) : [];
 
     if (window.confirm("Are you sure you want to delete this item?")) {
       setCartItems((prevCartItems) =>
