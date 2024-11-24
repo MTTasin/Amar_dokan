@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_DOMAIN = "http://192.168.0.105:8000";
+const BACKEND_DOMAIN = "https://amardokanbackend.tasinblog.com";
 
 const REGISTER_URL = `${BACKEND_DOMAIN}/auth/users/`;
 const LOGIN_URL = `${BACKEND_DOMAIN}/auth/jwt/create/`;

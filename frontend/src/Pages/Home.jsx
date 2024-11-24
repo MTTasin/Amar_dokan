@@ -17,7 +17,7 @@ export default function Home() {
     setLoading(true);
 
     axios
-      .get(`http://192.168.0.105:8000/products/`)
+      .get(`https://amardokanbackend.tasinblog.com/products/`)
       .then((res) => {
         const randomProducts = res.data
           .sort(() => Math.random() - 0.5)
@@ -59,12 +59,7 @@ export default function Home() {
         <div className={loading ? "opacity-10 z-0" : ""}>
           <div>
             <h1 className="text-3xl font-bold text-red-500 text-center">
-              This project is still under development
-            </h1>
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-green-500 text-center">
-              Last Updated 22th Octeber 2024
+              This project is still under development and will be completed very soon.
             </h1>
           </div>
 

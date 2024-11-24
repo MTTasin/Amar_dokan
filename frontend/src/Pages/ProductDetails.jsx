@@ -12,7 +12,7 @@ export default function ProductDetails() {
 
     useEffect(() => {
         axios
-            .get(`http://192.168.0.105:8000/products/${params.id}/`)
+            .get(`https://backend.tasinblog.com/products/${params.id}/`)
             .then((res) => {
                 setData(res.data)
             })

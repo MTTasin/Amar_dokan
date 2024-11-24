@@ -17,7 +17,7 @@ export default function Categories() {
 
   useEffect(() => {
     axios
-      .get("http://192.168.0.105:8000/products/")
+      .get("https://amardokanbackend.tasinblog.com/products/")
       .then((res) => {
         const uniqueClasses = new Set(res.data.map((item) => item.category));
         const classesArray = Array.from(uniqueClasses);

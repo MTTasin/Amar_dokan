@@ -11,7 +11,7 @@ export default function CateProducts() {
 
   useEffect(() => {
     axios
-      .get(`http://192.168.0.105:8000/products/?category=${params.category}`)
+      .get(`https://amardokanbackend.tasinblog.com/products/?category=${params.category}`)
       .then((res) => {
         setData(res.data);
       })

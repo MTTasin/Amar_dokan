@@ -22,7 +22,7 @@ export default function DetailsSwiper() {
 
   const fetchImages = () => {
     axios
-      .get(`http://192.168.0.105:8000/products/${Params.id}/`)
+      .get(`https://amardokanbackend.tasinblog.com/products/${Params.id}/`)
       .then((res) => {
         setData(res.data.images);
       })

@@ -21,7 +21,7 @@ export default function Dashboard() {
     setLoading(true);
     setError(null);
     axios
-      .get("http://192.168.0.105:8000/products/", {
+      .get("https://amardokanbackend.tasinblog.com/products/", {
         headers: {
           "Content-type": "application/json",
         },

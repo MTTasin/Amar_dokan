@@ -12,7 +12,7 @@ export default function Carou() {
   const [data, setData] = useState([]);
 
   const { response, error, loading } = useFetch(
-    `http://192.168.0.105:8000/carousels/`
+    `https://amardokanbackend.tasinblog.com/carousels/`
   );
 
   useEffect(() => {

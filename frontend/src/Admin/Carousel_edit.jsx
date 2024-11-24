@@ -19,12 +19,12 @@ export default function Carousel_edit() {
   );
 
   const { response, error, loading } = useFetch(
-    `http://192.168.0.105:8000/carousels/`
+    `https://amardokanbackend.tasinblog.com/carousels/`
   );
 
 
   function fetchData() {
-    fetch(`http://192.168.0.105:8000/carousels/`)
+    fetch(`https://amardokanbackend.tasinblog.com/carousels/`)
       .then((response) => response.json())
       .then((data) => setCarousel(data));
   }
@@ -46,7 +46,7 @@ export default function Carousel_edit() {
 
   function handleClick(id) {
     axios
-      .delete(`http://192.168.0.105:8000/carousels/${id}/`, {
+      .delete(`https://amardokanbackend.tasinblog.com/carousels/${id}/`, {
         headers: {
           "Content-type": "application/json",
           "Authorization": `JWT ${user.access}`,
@@ -66,7 +66,7 @@ export default function Carousel_edit() {
 
   function handlesubmit(e) {
     e.preventDefault();
-    fetch("http://192.168.0.105:8000/carousels/", {
+    fetch("https://amardokanbackend.tasinblog.com/carousels/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export default function Carousel_edit() {
   // function handlesubmit(e) {
   //   e.preventDefault();
   //   axios
-  //     .post(`http://192.168.0.105:8000/carousels/`, {
+  //     .post(`https://amardokanbackend.tasinblog.com/carousels/`, {
   //       headers: {
   //         "Content-type": "application/json",
   //         "Authorization": `JWT ${user.access}`,

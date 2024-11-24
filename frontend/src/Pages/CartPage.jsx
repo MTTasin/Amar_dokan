@@ -18,7 +18,7 @@ export default function CartPage() {
     try {
       const responses = await axios.all(
         cartID.map((id) =>
-          axios.get(`http://192.168.0.105:8000/products/${id}/`)
+          axios.get(`https://amardokanbackend.tasinblog.com/products/${id}/`)
         )
       );
       const limitedCartItems = responses.map((response) => ({
