@@ -1,9 +1,3 @@
-import "@mantine/core/styles.css";
-
-import "@mantine/carousel/styles.css";
-
-import { MantineProvider } from "@mantine/core";
-
 import Header from "./Components/Header";
 
 import { Routes, Route } from "react-router-dom";
@@ -11,8 +5,6 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 
 import About from "./Pages/About";
-
-import Carousel_edit from "./Admin/Carousel_edit";
 
 import Layout from "./Layout/Layout";
 
@@ -25,8 +17,6 @@ import LoginForm from "./Pages/LoginForm";
 import RegisterForm from "./Pages/RegisterForm";
 
 import ResetPassConfirm from "./Pages/ResetPassConfirm";
-
-import Dashboard from "./Pages/Dashboard";
 
 import { Provider } from "react-redux";
 
@@ -48,21 +38,38 @@ import CartPage from "./Pages/CartPage";
 
 import Profile from "./Pages/Profile";
 
+import DashboardLayout from "./Layout/DashboardLayout";
+
+import DashboardOverview from "./Pages/DashboardOverview";
+
+import UserManagement from "./Pages/UserManagement";
+
+import ProductManagement from "./Pages/ProductManagement";
+
+import CarouselManagement from "./Pages/CarouselManagement";
+
+import OrderManagement from "./Pages/OrderManagement";
+
 export default function App() {
   return (
-    <MantineProvider defaultColorScheme="false">
       <Provider store={store}>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/AllProducts" element={<AllProducts />} />
             <Route path="/About" element={<About />} />
-            <Route path="/Carousel_edit" element={<Carousel_edit />} />
+            
             <Route exact path="/activate/:uid/:token" element={<Activate />} />
             <Route exact path="/reset_password" element={<ResetPass />} />
             <Route exact path="/login" element={<LoginForm />} />
             <Route exact path="/signup" element={<RegisterForm />} />
-            <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<DashboardLayout />}>
+              <Route index element={<DashboardOverview />} />
+              <Route path="users" element={<UserManagement />} />
+              <Route path="products" element={<ProductManagement />} />
+              <Route path="carousels" element={<CarouselManagement />} />
+              <Route path="orders" element={<OrderManagement />} />
+            </Route>
             <Route exact path="/product/:id" element={<ProductDetails />} />
             <Route exact path="/products/:category" element={<CateProducts />} />
             <Route exact path="/profile" element={<Profile />} />
@@ -78,6 +85,5 @@ export default function App() {
           
         </Layout>
       </Provider>
-    </MantineProvider>
   );
 }

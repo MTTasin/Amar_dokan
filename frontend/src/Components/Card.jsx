@@ -9,24 +9,23 @@ export default function Card(props) {
   const { cartItems, setCartItems } = useStateContext();
   
   useEffect(() => {
-    const cartItemsFromCookie = Cookies.get("Id");
+    const cartItemsFromCookie = Cookies.get("cart");
     if (cartItemsFromCookie) {
-      setCartItems(cartItemsFromCookie.split(","));
+      setCartItems(JSON.parse(cartItemsFromCookie));
     }
   }, []);
 
   const addToCart = () => {
     setCartbutton(true);
     const cartItem = { id: props.id, quantity: 1 };
-    const existingCartItems = Cookies.get("cart") ? JSON.parse(Cookies.get("cart")) : [];
-    const updatedCartItems = [...existingCartItems, cartItem];
+    const updatedCartItems = [...cartItems, cartItem];
     setCartItems(updatedCartItems);
     Cookies.set("cart", JSON.stringify(updatedCartItems), { expires: 7 });
   }
   
   const removeFromCart = () => {
     setCartbutton(false);
-    const updatedCartItems = JSON.parse(Cookies.get("cart")).filter(item => item.id.toString() !== props.id.toString());
+    const updatedCartItems = cartItems.filter(item => item.id.toString() !== props.id.toString());
     setCartItems(updatedCartItems);
     Cookies.set("cart", JSON.stringify(updatedCartItems), { expires: 7 });
   }
@@ -46,60 +45,56 @@ export default function Card(props) {
 
   
 
-  const tags = props.tags.map((tag) => {
+  const tags = props.tags && props.tags.map((tag) => {
     return (
-      <div
+      <span
         key={tag}
-        className="badge badge-outline hover:bg-yellow-300 hover:text-black "
+        className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
       >
-        {tag}
-      </div>
+        #{tag}
+      </span>
     );
   });
 
   return (
-    <div>
-    <div className="card bg-base-900 w-96 shadow-xl hover:scale-105 hover:transition hover:duration-200 hover:ease-in z-0">
-      <figure>
-        <img src={props.img} alt={props.title} />
-      </figure>
-      <div className="card-body">
-        <h2 className="card-title">
-          {props.title}
-          <div className="badge bg-yellow-300 text-black">
-            <span>
-              {props.rating > 4 ? <FaStar /> : <FaRegStarHalfStroke />}
-            </span>
-            {props.rating}
-          </div>
-        </h2>
-        <div className="text-gray-500 card-actions justify-start text-xl">
-          ${props.price}
+    <div className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white transform hover:-translate-y-1 hover:scale-105 transition duration-300 ease-in-out">
+      <img className="w-full h-48 object-cover" src={`${import.meta.env.VITE_API_BASE_URL}${props.img}`} alt={props.title} />
+      <div className="px-6 py-4">
+        <div className="font-bold text-xl mb-2 text-gray-800">{props.title}</div>
+        <div className="flex items-center mb-2">
+          <span className="text-yellow-500 flex items-center">
+            {props.rating > 4 ? <FaStar /> : <FaRegStarHalfStroke />}
+            <span className="ml-1 text-gray-600 text-sm">{props.rating}</span>
+          </span>
+          <span className="ml-auto text-2xl font-bold text-gray-900">${props.price}</span>
         </div>
-        <div className="card-actions justify-end mt-auto">{tags}</div>
-        <div className="card-actions justify-center w-full mt-auto">
-          <Link
-            to={`/product/${props.id}`}
-            className="btn btn-primary w-full mt-5"
-          >
-            View Details
-          </Link>
-
-          {cartbutton ? (
-            <button className="btn btn-error w-full mt-5" onClick={removeFromCart}>
-              Remove from Cart
-            </button>
-          ) : (
-            <button
-              className="btn btn-secondary w-full mt-5"
-              onClick={addToCart}
-            >
-              Add to Cart
-            </button>
-          )}
+        <p className="text-gray-700 text-base mb-4">
+          {props.description ? props.description.substring(0, 100) + '...' : 'No description available.'}
+        </p>
+        <div className="px-6 pt-4 pb-2">
+          {tags}
         </div>
       </div>
-    </div>
+      <div className="px-6 py-4 flex justify-between items-center">
+        <Link
+          to={`/product/${props.id}`}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 text-sm"
+        >
+          View Details
+        </Link>
+        {cartbutton ? (
+          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 text-sm" onClick={removeFromCart}>
+            Remove from Cart
+          </button>
+        ) : (
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 text-sm"
+            onClick={addToCart}
+          >
+            Add to Cart
+          </button>
+        )}
+      </div>
     </div>
   );
 }

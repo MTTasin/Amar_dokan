@@ -1,6 +1,6 @@
 import Carou from "../Components/Carousel";
 import Card from "../Components/Card";
-import axios from "axios";
+import useAxios from "../useAxios";
 import { useState, useEffect } from "react";
 import Loader from "../Components/Loader/Loader";
 import Categories from "../Components/Categories";
@@ -10,30 +10,17 @@ import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { LuShieldCheck } from "react-icons/lu";
 
 export default function Home() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { response: data, error, loading } = useAxios(`${import.meta.env.VITE_API_BASE_URL}/products/`);
+  const [randomProducts, setRandomProducts] = useState([]);
 
-  const fetchData = () => {
-    setLoading(true);
-
-    axios
-      .get(`https://amardokanbackend.tasinblog.com/products/`)
-      .then((res) => {
-        const randomProducts = res.data
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 8);
-        setData(randomProducts);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (data) {
+      const shuffled = [...data].sort(() => 0.5 - Math.random());
+      setRandomProducts(shuffled.slice(0, 8));
+    }
+  }, [data]);
 
-  const CardData = data.map((product) => {
+  const CardData = randomProducts && randomProducts.map((product) => {
     return (
       <Card
         key={product.id}
@@ -49,70 +36,55 @@ export default function Home() {
   });
 
   return (
-    <>
-      <div className="relative">
-        {loading && (
-          <div className="flex justify-center items-center h-[80vh] w-[100vw] z-10 absolute">
-            <Loader />
-          </div>
-        )}
-        <div className={loading ? "opacity-10 z-0" : ""}>
-          <div>
-            <h1 className="text-3xl font-bold text-red-500 text-center">
-              This project is still under development and will be completed very soon.
-            </h1>
-          </div>
-
-          <div>
-            <Carou />
-          </div>
-          <div>
-            <Categories />
-          </div>
-          <div className="flex flex-wrap justify-center gap-4 p-4 ">
-            {CardData}
-          </div>
-          <div className="flex justify-center m-5">
-            <Link to="/AllProducts">
-              <button className="btn bg-pink-500 rounded-none text-xl text-center text-white mt-10">
-                View all products
-              </button>
-            </Link>
-          </div>
+    <div className="min-h-screen bg-gray-50">
+      {loading && (
+        <div className="flex justify-center items-center h-screen w-full fixed inset-0 bg-gray-50 bg-opacity-75 z-50">
+          <Loader />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
-          <div className="card">
-            <figure>
-              <FaTruckFast size={50} className="rounded-full border p-3" />
-            </figure>
-            <div className="card-body items-center text-center">
-              <h2 className="card-title">Fast delivery</h2>
-              <p>Fast delivery within 24 hours</p>
+      )}
+      <div className={loading ? "opacity-50 pointer-events-none" : ""}>
+        <div className="container mx-auto px-4 py-8">
+          
+
+          <Carou />
+
+          <Categories />
+
+          <section className="py-12">
+            <h2 className="text-4xl font-bold text-gray-800 text-center mb-10">Featured Products</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {CardData}
             </div>
-          </div>
-          <div className="card">
-            <figure>
-              <TfiHeadphoneAlt
-                size={50}
-                className="rounded-full border p-3"
-              />
-            </figure>
-            <div className="card-body items-center text-center">
-              <h2 className="card-title">24/7 customer service</h2>
-              <p>Friendly 24/7 customer support.</p>
+            <div className="text-center mt-12">
+              <Link to="/AllProducts">
+                <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                  View All Products
+                </button>
+              </Link>
             </div>
-          </div>
-          <div className="card">
-            <figure>
-              <LuShieldCheck size={50} className="rounded-full border p-3" />
-            </figure>
-            <div className="card-body items-center text-center">
-              <h2 className="card-title">Money back guarantee</h2>
-              <p>30 days money back guarantee</p>
+          </section>
+
+          <section className="py-12 bg-white rounded-lg shadow-md mt-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
+              <div className="flex flex-col items-center text-center p-6">
+                <FaTruckFast className="text-blue-600 text-5xl mb-4" />
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Fast Delivery</h3>
+                <p className="text-gray-600">Get your orders delivered quickly and efficiently.</p>
+              </div>
+              <div className="flex flex-col items-center text-center p-6">
+                <TfiHeadphoneAlt className="text-blue-600 text-5xl mb-4" />
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">24/7 Customer Service</h3>
+                <p className="text-gray-600">Our friendly support team is always here to help you.</p>
+              </div>
+              <div className="flex flex-col items-center text-center p-6">
+                <LuShieldCheck className="text-blue-600 text-5xl mb-4" />
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Money Back Guarantee</h3>
+                <p className="text-gray-600">Shop with confidence, knowing your purchase is protected.</p>
+              </div>
             </div>
-          </div>
+          </section>
         </div>
       </div>
-    </>
+    </div>
   );
 }

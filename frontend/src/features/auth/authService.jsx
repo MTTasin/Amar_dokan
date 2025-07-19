@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_DOMAIN = "https://amardokanbackend.tasinblog.com";
+const BACKEND_DOMAIN = "http://127.0.0.1:8000";
 
 const REGISTER_URL = `${BACKEND_DOMAIN}/auth/users/`;
 const LOGIN_URL = `${BACKEND_DOMAIN}/auth/jwt/create/`;
@@ -102,7 +102,7 @@ const getUserInfo = async (accessToken) => {
   }
 
   const response = await axios.get(GET_USER_INFO, config)
-
+  console.log("Raw user info response from backend:", response.data)
   return response.data
 }
 

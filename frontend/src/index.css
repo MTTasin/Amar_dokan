@@ -4,7 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+body {
+  @apply bg-gray-100 text-gray-800;
+}
 
 .font-siliguri {
   font-family: "Hind Siliguri", sans-serif;
@@ -15,42 +17,4 @@
 .font-abu {
   font-family: "Abu Sayed";
   src: url("./assets/Codepotro Abu Sayed.ttf") format("truetype");
-}
-
-.mantine-Carousel-indicator {
-  background-color: transparent;
-
-  &:before {
-    content: "";
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    background-image: url("./assets/circle-dashed-svgrepo-com.svg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    margin-right: 0.5em;
-  }
-
-  &[data-active] {
-    width: 1.5em;
-    height: 1.5em;
-    background-image: url("./assets/circle-svgrepo-com.svg");
-
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    transition: width 1s ease;
-  }
-}
-
-.swiper-pagination-bullet {
-  background-color: grey;
-  opacity: 1;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: red;
-  border: 2px solid blue;
-  transform: scale(1.5);
 }

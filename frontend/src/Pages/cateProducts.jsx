@@ -1,26 +1,15 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import useAxios from "../useAxios";
 import Card from "../Components/Card";
 import { Link } from "react-router-dom";
+import Loader from "../Components/Loader/Loader";
 
 export default function CateProducts() {
   const params = useParams();
 
-  const [data, setData] = useState([]);
+  const { response: data, error, loading } = useAxios(`${process.env.VITE_API_BASE_URL}/products/?category=${params.category}`);
 
-  useEffect(() => {
-    axios
-      .get(`https://amardokanbackend.tasinblog.com/products/?category=${params.category}`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  const CardData = data.map((product) => {
+  const CardData = data && Array.isArray(data) ? data.map((product) => {
     return (
       <Card
         key={product.id}
@@ -32,52 +21,36 @@ export default function CateProducts() {
         rating={product.rating}
       />
     );
-  });
+  }) : null;
 
   return (
-    <>
-      <div className="breadcrumbs text-sm">
-        <ul>
-          <li>
-            <Link to="/">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="h-4 w-4 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-                ></path>
-              </svg>
-              Home
-            </Link>
-          </li>
-          <li>
-            <span className="inline-flex items-center gap-2 capitalize">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="h-4 w-4 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                ></path>
-              </svg>
-              {params.category}
-            </span>
-          </li>
-        </ul>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      {loading && (
+        <div className="flex justify-center items-center h-screen w-full fixed inset-0 bg-gray-50 bg-opacity-75 z-50">
+          <Loader />
+        </div>
+      )}
+      <div className={loading ? "opacity-50 pointer-events-none" : ""}>
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-sm breadcrumbs mb-6 text-gray-600">
+            <ul>
+              <li><Link to="/" className="hover:text-blue-600">Home</Link></li>
+              <li><span className="text-gray-800 font-semibold capitalize">{params.category}</span></li>
+            </ul>
+          </div>
 
-      <div className="flex flex-wrap justify-center gap-4 p-4 ">{CardData}</div>
-    </>
+          <h1 className="text-4xl font-bold text-gray-800 text-center mb-10 capitalize">{params.category} Products</h1>
+
+          {error && <div className="text-center text-red-500 mb-4">Error: {error.message}</div>}
+          {!data || data.length === 0 && !loading && !error ? (
+            <div className="text-center text-gray-600 text-lg">No products found in this category.</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {CardData}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

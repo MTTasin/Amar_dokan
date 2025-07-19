@@ -51,25 +51,29 @@ class ProductViewSet(viewsets.ModelViewSet):
         
 
     def get_queryset(self):
+        queryset = self.queryset
         limit = self.request.query_params.get('limit')
         name = self.request.query_params.get('name')
         category = self.request.query_params.get('category')
         sku = self.request.query_params.get('sku')
         pagination = self.request.query_params.get('page')
-        
 
-        if limit:
-            return self.queryset.all()[:int(limit)]
-        elif name:
-            return self.queryset.filter(name__icontains=name)
-        elif category:
-            return self.queryset.filter(category__icontains=category)
-        elif sku:
-            return self.queryset.filter(sku__icontains=sku)
-        elif pagination:
-            return self.queryset.all()[int(pagination)*10:int(pagination)*10+10]
-        else:
-            return self.queryset.all()
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        if category:
+            queryset = queryset.filter(category__icontains=category)
+        if sku:
+            queryset = queryset.filter(sku__icontains=sku)
+        
+        if pagination:
+            page_size = 10
+            start = int(pagination) * page_size
+            end = start + page_size
+            queryset = queryset[start:end]
+        elif limit:
+            queryset = queryset[:int(limit)]
+            
+        return queryset
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer

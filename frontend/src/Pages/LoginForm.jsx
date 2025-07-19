@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login, reset, getUserInfo } from "../features/auth/authSlice";
+import { login, reset, getUserInfo } from "../features/auth/authslice";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Loader/Loader";
 
 function LoginForm() {
-  const [loginstate, setLoginstate] = useState(true);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -16,11 +14,9 @@ function LoginForm() {
     password: "",
   });
 
-  
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
-  
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -47,69 +43,85 @@ function LoginForm() {
   }, [user, isError, isSuccess, navigate, dispatch]);
 
   return (
-    <div className="relative">
-    {isLoading && <div className="flex justify-center items-center h-[80vh] w-[100vw] z-10 absolute"><Loader /></div>}
-    <div className={isLoading ? "opacity-10 z-0" : "my-auto"}>
-        <div className="grid place-items-center grid-cols-5">
-          <div className="col-span-3 hidden md:block">
-            <img src="/login.png" alt="Login Image" className="w-[50vw] m-auto object-cover" />
-          </div>
-          <div className="col-span-5 md:col-span-2 mx-3">
-            <div className="flex flex-col items-center">
-              <form>
-                <h2 className="text-center text-3xl mb-7 mt-4">
-                  Login to Amar Dokan
-                </h2>
-                <input
-                  type="email"
-                  value={loginFormData.email}
-                  onChange={(e) =>
-                    setLoginFormData({ ...loginFormData, email: e.target.value })
-                  }
-                  className="input input-bordered w-full mb-5"
-                  placeholder="Email"
-                />
-                <input
-                  type="password"
-                  value={loginFormData.password}
-                  onChange={(e) =>
-                    setLoginFormData({
-                      ...loginFormData,
-                      password: e.target.value,
-                    })
-                  }
-                  className="input input-bordered w-full mb-5"
-                  placeholder="Password"
-                />
-                <button
-                  type="submit"
-                  onClick={(e) => handleLoginSubmit(e)}
-                  className="btn btn-primary w-full mt-4"
-                >
-                  Login
-                </button>
-              </form>
-
-              <p className="mt-5">
-                Don't have an account?{" "}
-                <Link
-                  to="/signup"
-                  className="text-primary hover:underline"
-                >
-                  Register
-                </Link>
-              </p>
-              <p className="mt-5">
-                Forgot Password?{" "}
-                <Link
-                  to="/reset_password"
-                  className="text-primary hover:underline"
-                >
-                  Click Here
-                </Link>
-              </p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      {isLoading && (
+        <div className="flex justify-center items-center h-screen w-full fixed inset-0 bg-gray-50 bg-opacity-75 z-50">
+          <Loader />
+        </div>
+      )}
+      <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-lg z-10">
+        <div>
+          <img
+            className="mx-auto h-12 w-auto"
+            src="/logo.png"
+            alt="Amar Dokan Logo"
+          />
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Sign in to your account
+          </h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleLoginSubmit}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="bg-white appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+                value={loginFormData.email}
+                onChange={(e) =>
+                  setLoginFormData({ ...loginFormData, email: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="bg-white appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
+                value={loginFormData.password}
+                onChange={(e) =>
+                  setLoginFormData({
+                    ...loginFormData,
+                    password: e.target.value,
+                  })
+                }
+              />
             </div>
           </div>
+
+          <div className="flex items-center justify-between">
+            <div className="text-sm">
+              <Link
+                to="/reset_password"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Forgot your password?
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+        <div className="text-center text-sm text-gray-600">
+          Don't have an account?{" "}
+          <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+            Sign up
+          </Link>
         </div>
       </div>
     </div>
@@ -122,48 +134,4 @@ export default LoginForm;
 
 
 
-{/* <div className="flex flex-col items-center">
-          <div className="flex flex-col items-center">
-            <img src="/logo.png" alt="" className="w-24" />
-          </div>
-          <h2 className="text-center text-3xl font-bold mb-7 mt-4">Login</h2>
-          <form
-            onSubmit={(e) => handleLoginSubmit(e)}
-            className="flex flex-col gap-3 w-full max-w-md"
-          >
-            <input
-              type="email"
-              value={loginFormData.email}
-              onChange={(e) =>
-                setLoginFormData({ ...loginFormData, email: e.target.value })
-              }
-              className="input input-bordered w-full"
-              placeholder="Email"
-            />
-            <input
-              type="password"
-              value={loginFormData.password}
-              onChange={(e) =>
-                setLoginFormData({
-                  ...loginFormData,
-                  password: e.target.value,
-                })
-              }
-              className="input input-bordered w-full"
-              placeholder="Password"
-            />
-            <button type="submit" className="btn btn-primary">
-              Login
-            </button>
-
-            <Link
-              to="/reset_password"
-              className="text-center cursor-pointer mx-auto"
-            >
-              Forgot Password
-            </Link>
-            <div className="text-center cursor-pointer mx-auto">
-              <Link to="/signup">Don't have an account? Sign up</Link>
-            </div>
-          </form>
-        </div> */}
+{/*  */}

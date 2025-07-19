@@ -1,59 +1,46 @@
 import { FaFacebook, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="text-center py-10">
-      <div className="p-4 mt-4 bg-base-300 grid grid-cols-1 md:grid-cols-5">
-        <div className="mt-4">
-          <h1 className="text-4xl font-abu">Amar Dokan</h1>
+    <footer className="bg-gray-800 text-white py-10 mt-10">
+      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="mb-6 md:mb-0">
+          <h1 className="text-3xl font-bold font-abu mb-4">Amar Dokan</h1>
+          <p className="text-gray-400 text-sm">Your one-stop shop for everything you need.</p>
         </div>
-        <div className="mt-4">
-          <h2 className="text-2xl">Exclusive</h2>
-          <ul className="">
-            <li className="mt-2">Subscribe</li>
-            <li className="mt-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="input input-bordered w-2/3"
-              />
-            </li>
+
+        <div className="mb-6 md:mb-0">
+          <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
+          <ul>
+            <li className="mb-2"><Link to="/AllProducts" className="text-gray-400 hover:text-white transition duration-300">Shop</Link></li>
+            <li className="mb-2"><Link to="/About" className="text-gray-400 hover:text-white transition duration-300">About Us</Link></li>
+            <li className="mb-2"><Link to="/contact" className="text-gray-400 hover:text-white transition duration-300">Contact</Link></li>
           </ul>
         </div>
-        <div className="mt-4">
-          <h2 className="text-2xl">Support</h2>
-          <ul className="">
-            <li className="mt-2">Chittagong, Bangladesh</li>
-            <li className="mt-2">+8801974283081</li>
-            <li className="mt-2">m.t.tasin20@gmail.com</li>
+
+        <div className="mb-6 md:mb-0">
+          <h2 className="text-xl font-semibold mb-4">Support</h2>
+          <ul>
+            <li className="mb-2 text-gray-400">Chittagong, Bangladesh</li>
+            <li className="mb-2 text-gray-400">+8801974283081</li>
+            <li className="mb-2 text-gray-400">m.t.tasin20@gmail.com</li>
           </ul>
         </div>
-        <div className="mt-4">
-          <h2 className="text-2xl">Account</h2>
-          <ul className="">
-            <li className="mt-2">Profile</li>
-            <li className="mt-2">Orders</li>
-            <li className="mt-2">Wishlist</li>
-            <li className="mt-2">Cart</li>
-          </ul>
-        </div>
-        <div className="mt-4 col-span-2 md:col-span-1">
-          <h2 className="text-2xl">Quick Links</h2>
-          <div className="flex justify-evenly mt-2">
-            <FaFacebook />
-            <FaTwitter />
-            <FaYoutube />
-            <FaInstagram />
+
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Follow Us</h2>
+          <div className="flex space-x-4">
+            <a href="#" className="text-gray-400 hover:text-white transition duration-300"><FaFacebook className="text-2xl" /></a>
+            <a href="#" className="text-gray-400 hover:text-white transition duration-300"><FaTwitter className="text-2xl" /></a>
+            <a href="#" className="text-gray-400 hover:text-white transition duration-300"><FaYoutube className="text-2xl" /></a>
+            <a href="#" className="text-gray-400 hover:text-white transition duration-300"><FaInstagram className="text-2xl" /></a>
           </div>
         </div>
       </div>
-      <hr />
-      <div>
-        © 2022 Copyright:{" "}
-        <a className="text-white" href="https://tasinblog.com">
-          M.T.Tasin
-        </a>{" "}
-        | All Rights Reserved
+
+      <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500 text-sm">
+        © {new Date().getFullYear()} Amar Dokan. All Rights Reserved.
       </div>
     </footer>
   );

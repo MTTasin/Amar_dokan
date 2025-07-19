@@ -7,7 +7,7 @@ from django.contrib.auth.models import User, AbstractBaseUser, PermissionsMixin,
 
 class Carousel(models.Model):
     name = models.CharField(max_length=100)
-    image = models.CharField(max_length=1000)
+    image = models.ImageField(upload_to='carousels/')
     link = models.CharField(max_length=1000, blank=True, null=True)
 
 
@@ -17,7 +17,7 @@ class Carousel(models.Model):
 
 class featured(models.Model):
     name = models.CharField(max_length=100)
-    image = models.CharField(max_length=1000)
+    image = models.ImageField(upload_to='carousels/')
     link = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
@@ -44,8 +44,8 @@ class Product(models.Model):
     reviews = models.JSONField()
     returnPolicy = models.CharField(max_length=100)
     minimumOrderQuantity = models.IntegerField()
-    images= models.JSONField()
-    thumbnail = models.CharField(max_length=1000)
+    images= models.ImageField(upload_to='products/')
+    thumbnail = models.ImageField(upload_to='products/thumbnails/')
 
 
 
@@ -58,7 +58,7 @@ class ProductReview(models.Model):
     rating = models.IntegerField()
     comment = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    reviewerName = models.ForeignKey("UserAccount", on_delete=models.CASCADE, verbose_name=("first_name" + " " + "last_name"))
+    reviewerName = models.ForeignKey("UserAccount", on_delete=models.CASCADE, verbose_name=("Reviewer Name"))
     reviewerEmail = models.EmailField()
 
 
@@ -134,7 +134,7 @@ class OrderStatus(models.TextChoices):
     CANCELLED = Cancelled
 
 class Order(models.Model):
-    user = models.ForeignKey("UserAccount", on_delete=models.CASCADE, verbose_name=("first_name" + " " + "last_name"))
+    user = models.ForeignKey("UserAccount", on_delete=models.CASCADE, verbose_name=("User"))
     product = models.ForeignKey("Product", on_delete=models.CASCADE, verbose_name=("sku"))
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)

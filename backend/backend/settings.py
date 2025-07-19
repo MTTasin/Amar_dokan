@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -141,6 +141,9 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -184,8 +187,9 @@ DJOSER={
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
-        'user_create': 'app.serializers.UserCreateSerializer',
-        'user': 'app.serializers.UserSerializer',
+        'user_create': 'app.serializers.CustomUserSerializer',
+        'user': 'app.serializers.CustomUserSerializer',
+        'current_user': 'app.serializers.CustomUserSerializer',
         'user_delete': 'app.serializers.UserDeleteSerializer',
     }
 }

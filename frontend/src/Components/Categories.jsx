@@ -7,117 +7,75 @@ import {
   FaRegArrowAltCircleLeft,
   FaRegArrowAltCircleRight,
 } from "react-icons/fa";
-import { Button } from "@mantine/core";
 
 export default function Categories() {
-  const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
 
   const randomId = useId();
 
   useEffect(() => {
     axios
-      .get("https://amardokanbackend.tasinblog.com/products/")
+      .get(`${import.meta.env.VITE_API_BASE_URL}/products/`)
       .then((res) => {
         const uniqueClasses = new Set(res.data.map((item) => item.category));
         const classesArray = Array.from(uniqueClasses);
         setCategories(classesArray);
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Error fetching categories:", err);
       });
   }, []);
 
   const categoryCard = categories.map((category) => {
     return (
-      <>
-        <Link key={randomId} to={`/products/${category}`}>
-          <div className="card bg-white hover:bg-slate-300 w-32 h-48 shadow-xl">
-            <figure className="px-10 pt-10">
-              <img
-                src={`/${category}.svg`}
-                alt={category}
-                className="w-10 h-10"
-              />
-            </figure>
-            <div className="card-body items-center text-center">
-              <h2 className="card-title text-sm uppercase text-black">
-                {category}
-              </h2>
-            </div>
-          </div>
-        </Link>
-      </>
+      <Link key={randomId} to={`/products/${category}`}>
+        <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+          <img
+            src={`/${category}.svg`}
+            alt={category}
+            className="w-16 h-16 mb-2 object-contain"
+          />
+          <h2 className="text-sm font-semibold uppercase text-gray-800 text-center">
+            {category}
+          </h2>
+        </div>
+      </Link>
     );
   });
 
   const scrollLeft = () => {
     const element = document.getElementById("categories");
-    const scrollDistance = 200; // Adjust as needed
-    const duration = 500; // Adjust as needed
-
-    const startTime = new Date().getTime();
-    const initialScrollPosition = element.scrollLeft;
-
-    const animate = () => {
-      const elapsedTime = new Date().getTime() - startTime;
-      const progress = elapsedTime / duration;
-      const scrollPosition = initialScrollPosition + scrollDistance * progress;
-
-      element.scrollLeft = scrollPosition;
-
-      if (elapsedTime < duration) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    animate();
+    if (element) {
+      element.scrollBy({ left: -200, behavior: 'smooth' });
+    }
   };
   const scrollRight = () => {
     const element = document.getElementById("categories");
-    const scrollDistance = 200; // Adjust as needed
-    const duration = 500; // Adjust as needed
-
-    const startTime = new Date().getTime();
-    const initialScrollPosition = element.scrollLeft;
-
-    const animate = () => {
-      const elapsedTime = new Date().getTime() - startTime;
-      const progress = elapsedTime / duration;
-      const scrollPosition = initialScrollPosition - scrollDistance * progress;
-
-      element.scrollLeft = scrollPosition;
-
-      if (elapsedTime < duration) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    animate();
+    if (element) {
+      element.scrollBy({ left: 200, behavior: 'smooth' });
+    }
   };
 
   return (
-    <>
-      <div className="relative">
-        <h2 className="text-3xl font-bold p-4 border-l-[20px] rounded-xl border-pink-500 my-10">
-          Categories
-        </h2>
-        <div className="absolute top-5 right-5 hidden md:block">
-          <Button onClick={scrollRight} className="hover:text-pink-600">
-            <FaRegArrowAltCircleLeft className="text-3xl" />
-          </Button>
-          <Button onClick={scrollLeft} className="hover:text-pink-600">
-            <FaRegArrowAltCircleRight className="text-3xl" />
-          </Button>
-        </div>
-
-        <div
-          id="categories"
-          className="list flex no-wrap justify-evenly uppercase overflow-x-auto gap-2"
-        >
-          {categoryCard}
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold text-gray-800">Shop by Category</h2>
+        <div className="hidden md:flex space-x-2">
+          <button onClick={scrollLeft} className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition duration-300 focus:outline-none">
+            <FaRegArrowAltCircleLeft className="text-2xl text-gray-700" />
+          </button>
+          <button onClick={scrollRight} className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition duration-300 focus:outline-none">
+            <FaRegArrowAltCircleRight className="text-2xl text-gray-700" />
+          </button>
         </div>
       </div>
-    </>
+
+      <div
+        id="categories"
+        className="flex overflow-x-scroll pb-4 space-x-4 scrollbar-hide"
+      >
+        {categoryCard}
+      </div>
+    </div>
   );
 }

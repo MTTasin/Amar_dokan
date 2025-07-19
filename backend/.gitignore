@@ -1,6 +1,9 @@
+# Django
+__pycache__/
 *.pyc
-__pycache__
 db.sqlite3
-/env
-*.env
-.vscode
+.env
+
+# Virtualenv
+venv/
+env/
