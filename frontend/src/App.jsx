@@ -1,89 +1,127 @@
-import Header from "./Components/Header";
+import React, { useEffect } from 'react';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Routes, Route } from "react-router-dom";
+// Thunks
+import { fetchProducts } from './store/productsSlice';
+import { fetchSiteConfig } from './store/siteSlice';
+import { fetchColors, fetchSizes } from './store/filtersSlice';
+import { fetchCategories } from './store/categoriesSlice';
+import { fetchWishlist } from './store/authSlice';
+import { fetchOrders } from './store/ordersSlice';
+import { fetchAllUsers, fetchRoles } from './store/usersSlice';
+import { fetchHeroSlides } from './store/heroSlice';
+import { fetchFeaturedProducts } from './store/productsSlice';
 
-import Home from "./Pages/Home";
+// Pages and Components
+import Layout from './components/Layout.jsx';
+import HomePage from './pages/HomePage.jsx';
+import ShopPage from './pages/ShopPage.jsx';
+import ProductDetailPage from './pages/ProductDetailPage.jsx';
+import CartPage from './pages/CartPage.jsx';
+import AboutPage from './pages/AboutPage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
+import WishlistPage from './pages/WishlistPage.jsx';
+import ContactPage from './pages/ContactPage.jsx';
+import CheckoutPage from './pages/CheckoutPage.jsx';
+import DashboardPage from './pages/DashboardPage.jsx';
+import OrderHistory from './pages/dashboard/OrderHistory.jsx';
+// Import Admin Components
+import AdminDashboardPage from './pages/AdminDashboardPage.jsx'; // FIXED: Added missing import
+import AdminProductList from './pages/admin/AdminProductList.jsx';
+import AdminProductForm from './pages/admin/AdminProductForm.jsx';
+import AdminCategoryList from './pages/admin/AdminCategoryList.jsx';
+import AdminOrderList from './pages/admin/AdminOrderList.jsx';
+import AdminAttributesPage from './pages/admin/AdminAttributesPage.jsx';
+import AdminSiteConfigPage from './pages/admin/AdminSiteConfigPage.jsx';
+import AdminUserList from './pages/admin/AdminUserList.jsx';
+import AdminHeroSlides from './pages/admin/AdminHeroSlides.jsx';
 
-import About from "./Pages/About";
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+};
 
-import Layout from "./Layout/Layout";
+const AuthLayout = ({children}) => <div className="bg-gray-100">{children}</div>;
 
-import Activate from "./Pages/Activate";
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  return children;
+};
 
-import ResetPass from "./Pages/ResetPass";
+const AdminRoute = ({ children }) => {
+    const { isAuthenticated, user } = useSelector((state) => state.auth);
+    if (!isAuthenticated) return <Navigate to="/login" replace />;
+    if (!user?.is_staff) return <Navigate to="/dashboard" replace />;
+    return children;
+};
 
-import LoginForm from "./Pages/LoginForm";
+function App() {
+  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
-import RegisterForm from "./Pages/RegisterForm";
+  useEffect(() => {
+    dispatch(fetchSiteConfig());
+    dispatch(fetchProducts());
+    dispatch(fetchColors());
+    dispatch(fetchSizes());
+    dispatch(fetchCategories());
+    dispatch(fetchHeroSlides());
+    dispatch(fetchFeaturedProducts());
+  }, [dispatch]);
 
-import ResetPassConfirm from "./Pages/ResetPassConfirm";
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchWishlist());
+      dispatch(fetchOrders());
+      if (user?.is_staff) {
+        dispatch(fetchAllUsers());
+        dispatch(fetchRoles());
+      }
+    }
+  }, [isAuthenticated, user, dispatch]);
 
-import { Provider } from "react-redux";
-
-import { store } from "./features/auth/store";
-
-import { ToastContainer } from "react-toastify";
-
-import NotFound from "./Pages/404";
-
-import ProductDetails from "./Pages/ProductDetails";
-
-import CateProducts from "./Pages/cateProducts";
-
-import AllProducts from "./Pages/AllProducts";
-
-import "react-toastify/dist/ReactToastify.css";
-
-import CartPage from "./Pages/CartPage";
-
-import Profile from "./Pages/Profile";
-
-import DashboardLayout from "./Layout/DashboardLayout";
-
-import DashboardOverview from "./Pages/DashboardOverview";
-
-import UserManagement from "./Pages/UserManagement";
-
-import ProductManagement from "./Pages/ProductManagement";
-
-import CarouselManagement from "./Pages/CarouselManagement";
-
-import OrderManagement from "./Pages/OrderManagement";
-
-export default function App() {
   return (
-      <Provider store={store}>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/AllProducts" element={<AllProducts />} />
-            <Route path="/About" element={<About />} />
-            
-            <Route exact path="/activate/:uid/:token" element={<Activate />} />
-            <Route exact path="/reset_password" element={<ResetPass />} />
-            <Route exact path="/login" element={<LoginForm />} />
-            <Route exact path="/signup" element={<RegisterForm />} />
-            <Route path="/dashboard" element={<DashboardLayout />}>
-              <Route index element={<DashboardOverview />} />
-              <Route path="users" element={<UserManagement />} />
-              <Route path="products" element={<ProductManagement />} />
-              <Route path="carousels" element={<CarouselManagement />} />
-              <Route path="orders" element={<OrderManagement />} />
-            </Route>
-            <Route exact path="/product/:id" element={<ProductDetails />} />
-            <Route exact path="/products/:category" element={<CateProducts />} />
-            <Route exact path="/profile" element={<Profile />} />
-            <Route exact path="/cart" element={<CartPage />} />
-            <Route path="*" element={<NotFound />} />
-            <Route
-              exact
-              path="/password/reset/confirm/:uid/:token"
-              element={<ResetPassConfirm />}
-            />
-          </Routes>
-          <ToastContainer />
-          
-        </Layout>
-      </Provider>
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Layout><HomePage /></Layout>} />
+        <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
+        <Route path="/products/:productId" element={<Layout><ProductDetailPage /></Layout>} />
+        <Route path="/cart" element={<Layout><CartPage /></Layout>} />
+        <Route path="/about" element={<Layout><AboutPage /></Layout>} />
+        <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
+        
+        {/* Auth Routes */}
+        <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
+        <Route path="/register" element={<AuthLayout><RegisterPage /></AuthLayout>} />
+
+        {/* Protected User Routes */}
+        <Route path="/wishlist" element={<ProtectedRoute><Layout><WishlistPage /></Layout></ProtectedRoute>} />
+        <Route path="/checkout" element={<ProtectedRoute><Layout><CheckoutPage /></Layout></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><Layout><DashboardPage /></Layout></ProtectedRoute>}>
+          <Route path="orders" element={<OrderHistory />} />
+        </Route>
+
+        {/* Protected Admin Routes */}
+        <Route path="/admin" element={<AdminRoute><Layout><AdminDashboardPage /></Layout></AdminRoute>}>
+            <Route path="products" element={<AdminProductList />} />
+            <Route path="products/new" element={<AdminProductForm />} />
+            <Route path="products/edit/:productId" element={<AdminProductForm />} />
+            <Route path="categories" element={<AdminCategoryList />} />
+            <Route path="orders" element={<AdminOrderList />} />
+            <Route path="attributes" element={<AdminAttributesPage />} />
+            <Route path="settings" element={<AdminSiteConfigPage />} />
+            <Route path="users" element={<AdminUserList />} />
+            <Route path="hero" element={<AdminHeroSlides />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
+
+export default App;

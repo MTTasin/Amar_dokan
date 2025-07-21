@@ -1,44 +1,36 @@
-"""
-URL configuration for backend project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path, include, re_path
-from app.views import *
-from rest_framework import routers
-from django.views.generic import TemplateView
-from django.conf.urls.static import static
+from django.urls import path, include
 from django.conf import settings
+from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
 
+from orders.views import OrderViewSet
+from users.views import WishlistViewSet, UserViewSet, GroupViewSet
+from app.views import ProductAdminViewSet, ReviewViewSet # Import ReviewViewSet
 
-
-
-router = routers.DefaultRouter()
-router.register(r'carousels', CarouselViewSet)
-router.register(r'products', ProductViewSet)
-router.register(r'orders', OrderViewSet)
-
+# This router handles all authenticated user and admin actions under one prefix
+router = DefaultRouter()
+router.register(r'orders', OrderViewSet, basename='order')
+router.register(r'wishlist', WishlistViewSet, basename='wishlist')
+router.register(r'users', UserViewSet, basename='user-admin')
+router.register(r'roles', GroupViewSet, basename='role')
+router.register(r'products', ProductAdminViewSet, basename='product-admin')
+router.register(r'reviews', ReviewViewSet, basename='review') # Add dedicated review endpoint
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path("", include(router.urls)),
+    
+    # Djoser authentication URLs
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns += [
-    re_path(r'^.*', TemplateView.as_view(template_name='index.html')),
+    # Public, read-only API URLs
+    path('api/', include('app.urls')),
+
+    # Authenticated user & admin management URLs
+    path('api/manage/', include(router.urls)),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

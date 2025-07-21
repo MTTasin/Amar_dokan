@@ -1,16 +1,21 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
-import "./index.css";
-import { BrowserRouter } from "react-router-dom";
-import { StateContext } from "./Context.jsx";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import App from './App.jsx';
+import { store } from './store/store.jsx';
+import { injectStore } from './utils/api'; // Import the injectStore function
+import './index.css';
 
-createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <StrictMode>
-      <StateContext>
+// Inject the store into the api utility
+injectStore(store);
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
         <App />
-      </StateContext>
-    </StrictMode>
-  </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>
 );

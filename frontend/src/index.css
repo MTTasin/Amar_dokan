@@ -1,20 +1,27 @@
-@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Yatra+One&display=swap');
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 body {
-  @apply bg-gray-100 text-gray-800;
+    /* Changed to light background and dark text for the global body */
+    background-color: #f5f5f5; /* Very light gray */
+    color: #333333; /* Dark gray for text */
+    font-family: 'Inter', sans-serif; /* Keep Inter as default font */
+}
+h1, h2, h3, .font-anton {
+    font-family: 'Anton', sans-serif;
 }
 
-.font-siliguri {
-  font-family: "Hind Siliguri", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+
+@theme {
+  --color-brand-orange: #F36523; /* Your existing accent color */
+  --color-brand-dark: #1a1a1a; /* Can still be used for dark elements, e.g., text on light background, or specific dark components */
+  --color-brand-light: #ffffff; /* Explicitly white for light elements */
+  /* Adding new utility colors for clarity in light theme */
+  --color-text-primary: #333333; /* Primary text on light background */
+  --color-text-secondary: #6b7280; /* Secondary text, like descriptions */
+  --color-background-light: #f5f5f5; /* Light background for general sections */
+  --color-background-card: #ffffff; /* White background for cards/components */
+  --color-border-light: #e5e7eb; /* Light border color */
 }
 
-.font-abu {
-  font-family: "Abu Sayed";
-  src: url("./assets/Codepotro Abu Sayed.ttf") format("truetype");
-}

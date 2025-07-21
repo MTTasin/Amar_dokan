@@ -1,148 +1,119 @@
 from django.db import models
-from django.contrib.auth.models import User, AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.db.models import Avg, Count
+from django.utils.text import slugify
+from django.conf import settings
+from solo.models import SingletonModel
+import random
+import string
 
+# --- New Product Manager ---
+class ProductManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().annotate(
+            avg_rating=Avg('reviews__rating'),
+            reviews_count=Count('reviews')
+        )
 
-# Create your models here.
+# --- Models ---
 
-
-class Carousel(models.Model):
-    name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='carousels/')
-    link = models.CharField(max_length=1000, blank=True, null=True)
-
-
-    def __str__(self):
-        return self.name
+class HeroSlide(models.Model):
+    title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=300, blank=True)
+    background_image = models.ImageField(upload_to='hero_slides/')
+    button_text = models.CharField(max_length=50, default="Shop Now")
+    button_link = models.CharField(max_length=255, help_text="A URL or a slug for a page (e.g., /shop?category=new-arrivals)")
+    is_active = models.BooleanField(default=True)
     
-
-class featured(models.Model):
-    name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='carousels/')
-    link = models.CharField(max_length=1000, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-
-
-class Product(models.Model):
-    title = models.CharField(max_length=100) 
-    description = models.TextField()
-    category = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    discountPercentage = models.DecimalField(max_digits=5, decimal_places=2)
-    rating = models.DecimalField(max_digits=3, decimal_places=2)
-    stock = models.IntegerField()
-    tags = models.JSONField()
-    brand = models.CharField(max_length=100, blank=True, null=True)
-    sku = models.CharField(max_length=100)
-    weight = models.DecimalField(max_digits=5, decimal_places=2)
-    dimensions = models.JSONField()
-    warrantyInformation = models.CharField(max_length=100)
-    shippingInformation = models.CharField(max_length=100)
-    availabilityStatus = models.CharField(max_length=100)
-    reviews = models.JSONField()
-    returnPolicy = models.CharField(max_length=100)
-    minimumOrderQuantity = models.IntegerField()
-    images= models.ImageField(upload_to='products/')
-    thumbnail = models.ImageField(upload_to='products/thumbnails/')
-
-
-
     def __str__(self):
         return self.title
-    
 
-class ProductReview(models.Model):
-    review_for = models.ForeignKey("Product", on_delete=models.CASCADE, verbose_name=("sku"))
-    rating = models.IntegerField()
-    comment = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
-    reviewerName = models.ForeignKey("UserAccount", on_delete=models.CASCADE, verbose_name=("Reviewer Name"))
-    reviewerEmail = models.EmailField()
+class SiteConfiguration(SingletonModel):
+    site_name = models.CharField(max_length=255, default='The প্রফেসর')
+    logo = models.ImageField(upload_to='site/', blank=True, null=True)
+    about_title = models.CharField(max_length=255, blank=True)
+    about_story = models.TextField(blank=True)
+    about_mission = models.TextField(blank=True)
+    about_image = models.ImageField(upload_to='site/', blank=True, null=True)
+    contact_email = models.EmailField(blank=True)
+    contact_phone = models.CharField(max_length=20, blank=True)
+    contact_address = models.CharField(max_length=255, blank=True)
+    brand_video_url = models.URLField(blank=True, null=True, help_text="URL for the main brand video (e.g., on YouTube, Vimeo).")
 
-
-
-# Custom User model codes below
-
-class UserAccountManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password=None, **extra_fields):
-        if not email:
-            raise ValueError('Users must have an email address')
-
-        if not first_name:
-            raise ValueError('Users must have a first name')
-        
-        if not last_name:
-            raise ValueError('Users must have a last name')
-      
-        
-        email = self.normalize_email(email)
-        user = self.model(email=email, first_name=first_name, last_name=last_name, **extra_fields)
-
-        user.set_password(password)
-        user.save(using=self._db)
-
-        return user
-    
-    def create_superuser(self, email, first_name, last_name, password):
-        user = self.create_user(email, first_name, last_name, password)
-
-        user.is_superuser = True
-        user.is_staff = True
-        user.save(using=self._db)
-
-        return user
-    
-class UserAccount(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=255, unique=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(auto_now_add=True)
-
-    objects = UserAccountManager()
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-
-    def get_full_name(self):
-        return self.first_name + ' ' + self.last_name
-    
-    def get_short_name(self):
-        return self.first_name
-    
     def __str__(self):
-        return self.email
+        return "Site Configuration"
 
+    class Meta:
+        verbose_name = "Site Configuration"
 
-# Custom Order model codes below
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+    image = models.ImageField(upload_to='categories/', blank=True, null=True, help_text="Optional image for the category.")
+    is_featured = models.BooleanField(default=False, help_text="Featured categories will be displayed on the homepage.")
 
+    class Meta:
+        verbose_name_plural = "Categories"
 
-Pending = 'Pending',
-Processing = 'Processing',
-Delivered = 'Delivered',
-Cancelled = 'Cancelled'
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
 
+class Color(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    hex_code = models.CharField(max_length=7, unique=True, help_text="e.g., #FFFFFF")
+    def __str__(self): return self.name
 
-class OrderStatus(models.TextChoices):
-    PENDING = Pending
-    PROCESSING = Processing
-    DELIVERED = Delivered
-    CANCELLED = Cancelled
+class Size(models.Model):
+    name = models.CharField(max_length=50, unique=True, help_text="e.g., S, M, L, XL")
+    def __str__(self): return self.name
 
-class Order(models.Model):
-    user = models.ForeignKey("UserAccount", on_delete=models.CASCADE, verbose_name=("User"))
-    product = models.ForeignKey("Product", on_delete=models.CASCADE, verbose_name=("sku"))
-    quantity = models.IntegerField()
+class Product(models.Model):
+    TAG_CHOICES = (('new', 'New'), ('hot', 'Hot'), ('special', 'Special'))
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True, blank=True)
+    description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateTimeField(auto_now_add=True)
-    total = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=100, choices=OrderStatus.choices, default=OrderStatus.PENDING)
-    
-    
+    image = models.ImageField(upload_to='products/', help_text="This will be the main display image.")
+    colors = models.ManyToManyField(Color, blank=True)
+    sizes = models.ManyToManyField(Size, blank=True)
+    stock_quantity = models.PositiveIntegerField(default=10)
+    is_available = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
+    tag = models.CharField(max_length=10, choices=TAG_CHOICES, null=True, blank=True)
+    video_url = models.URLField(blank=True, null=True, help_text="Optional: A URL to a product video (e.g., on YouTube).")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.user
+    objects = ProductManager()
+
+    def save(self, *args, **kwargs):
+        if not self.slug: self.slug = slugify(self.name)
+        original_slug = self.slug
+        queryset = Product.objects.all()
+        if self.pk: queryset = queryset.exclude(pk=self.pk)
+        while queryset.filter(slug=self.slug).exists():
+            random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=4))
+            self.slug = f"{original_slug}-{random_suffix}"
+        super().save(*args, **kwargs)
+    def __str__(self): return self.name
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='products/gallery/')
+    def __str__(self): return f"Image for {self.product.name}"
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(choices=[(i, str(i)) for i in range(1, 6)])
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        unique_together = ('product', 'user')
+        ordering = ['-created_at']
+    def __str__(self): return f"Review by {self.user.name} for {self.product.name}"
