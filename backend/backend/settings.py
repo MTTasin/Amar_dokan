@@ -200,14 +200,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.waterfoundationbd.com'
-EMAIL_HOST_USER = 'mail@waterfoundationbd.com' # use any valid webmail address
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = '%B=OwMVL$O4}'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = False
-
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'm.t.tasin2002@gmail.com'
+EMAIL_HOST_PASSWORD = 'bksk upfn rigw bdua'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'The প্রফেসর <m.t.tasin2002@gmail.com>'
 DOMAIN = 'localhost:5173'
 
 SITE_NAME = 'The প্রফেসর'
