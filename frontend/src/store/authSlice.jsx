@@ -42,7 +42,6 @@ export const loginUser = createAsyncThunk('auth/loginUser', async ({ email, pass
     }
 });
 
-// FIXED: Implemented the registerUser async thunk
 export const registerUser = createAsyncThunk(
     'auth/registerUser',
     async (userData, { rejectWithValue }) => {
@@ -56,9 +55,29 @@ export const registerUser = createAsyncThunk(
             if (!response.ok) {
                 return rejectWithValue(data);
             }
-            // Registration doesn't log the user in, it just creates the account
-            // The backend (Djoser) will send an activation email.
             return data;
+        } catch (error) {
+            return rejectWithValue(error.toString());
+        }
+    }
+);
+
+// Async thunk for user activation
+export const activateUser = createAsyncThunk(
+    'auth/activateUser',
+    async ({ uid, token }, { rejectWithValue }) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/users/activation/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uid, token }),
+            });
+            if (!response.ok) {
+                 const errorData = await response.json();
+                return rejectWithValue(errorData);
+            }
+            // Activation returns 204 No Content on success
+            return {}; 
         } catch (error) {
             return rejectWithValue(error.toString());
         }
@@ -110,6 +129,10 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    clearAuthStatus(state) {
+        state.status = 'idle';
+        state.error = null;
+    },
     tokenRefreshed(state, action) {
         state.accessToken = action.payload.accessToken;
         localStorage.setItem('accessToken', action.payload.accessToken);
@@ -148,9 +171,21 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(registerUser.fulfilled, (state) => {
-        state.status = 'succeeded'; // Indicates success, user needs to check email
+        state.status = 'succeeded'; 
       })
       .addCase(registerUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      // Activation cases
+      .addCase(activateUser.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(activateUser.fulfilled, (state) => {
+        state.status = 'succeeded';
+      })
+      .addCase(activateUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
       })
@@ -171,5 +206,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, tokenRefreshed } = authSlice.actions;
+export const { logout, tokenRefreshed, clearAuthStatus } = authSlice.actions;
 export default authSlice.reducer;
