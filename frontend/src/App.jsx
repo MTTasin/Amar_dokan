@@ -90,6 +90,7 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Layout><HomePage /></Layout>} />
+        <Route path="/Amar_dokan" element={<Layout><HomePage /></Layout>} />
         <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
         <Route path="/products/:productId" element={<Layout><ProductDetailPage /></Layout>} />
         <Route path="/cart" element={<Layout><CartPage /></Layout>} />

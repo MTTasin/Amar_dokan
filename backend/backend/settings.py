@@ -18,7 +18,7 @@ SECRET_KEY = 'django-insecure-your-secret-key-here' # Replace with your actual s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -193,7 +193,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # For development, we'll just print emails to the console.
 # For production, you'd configure a real SMTP service.
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 
 
@@ -208,6 +208,6 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 
-DOMAIN = 'amardokan.vercel.app'
+DOMAIN = 'localhost:5173'
 
 SITE_NAME = 'The প্রফেসর'
